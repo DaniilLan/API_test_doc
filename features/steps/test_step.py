@@ -1,18 +1,27 @@
 from behave import given, when, then
 import requests
 from api_method import get_token_doc
-from methods import get_random_user_id
+from methods import random_user_id, generate_data
 
 ACCESS_TOKEN = get_token_doc()
 
 
-@given("path {path}")
+@given("valid user_id")
+def step_impl(context):
+    context.user_id = random_user_id()
+
+
+@given("path: {path}")
 def step_impl(context, path):
+    if "user_id" in path:
+        path = path.replace("user_id", str(context.user_id))
     context.url = f"http://192.168.7.221:8081{path}"
 
 
-@given("{type_token} API token")
+@given("API-token: {type_token}")
 def step_impl(context, type_token):
+    context.body = {}
+    context.params = {}
     if type_token == "valid":
         context.headers = {
             "Authorization": f"Bearer {ACCESS_TOKEN}",
@@ -30,34 +39,39 @@ def step_impl(context, type_token):
         }
 
 
-@when("method {type_request}")
+@given("json: create measurements")
+def step_impl(context):
+    context.body = generate_data()
+
+
+@given("json: {json}")
+def step_impl(context, json):
+    context.body = json
+
+
+@when("method: {type_request}")
 def step_impl(context, type_request):
     if type_request == 'GET':
-        context.response = requests.get(url=context.url, headers=context.headers)
+        context.response = requests.get(url=context.url, headers=context.headers, params=context.params)
     elif type_request == 'POST':
-        context.response = requests.post(url=context.url, headers=context.headers)
+        context.response = requests.post(url=context.url, headers=context.headers, json=context.body)
     elif type_request == 'PUT':
         context.response = requests.put(url=context.url, headers=context.headers)
     elif type_request == 'DELETE':
         context.response = requests.delete(url=context.url, headers=context.headers)
 
 
-@when("parameter count=true in GET request")
-def step_impl(context):
-    context.response = requests.get(url=f"{context.url}?$count=true", headers=context.headers)
+@when("parameters: {key}={value}")
+def step_impl(context, key, value):
+    context.params[key] = value
 
 
-@when("parameter top={quantity} in GET request")
-def step_impl(context, quantity):
-    context.response = requests.get(url=f"{context.url}?$top={quantity}", headers=context.headers)
-
-
-@then("status {status}")
+@then("status: {status}")
 def step_impl(context, status):
     assert context.response.status_code == int(status), f"Expected status code {status}, but got {context.response.status_code}"
 
 
-@then("answer is not empty")
+@then("answer: is not empty")
 def step_impl(context):
     assert context.response.json()["value"] != [], "Response 'value' field is empty"
 

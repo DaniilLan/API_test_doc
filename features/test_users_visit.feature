@@ -1,13 +1,20 @@
 Feature: Test /api/v4/Users(?)/Visit
 
   Scenario: Посетить карточку пациента
-    Given path /api/v4/Users(1)/Visit
-    And valid API token
-    When method POST
-    Then status 200
+    Given path: /api/v4/Users(1267)/Visit
+    And API-token: valid
+    When method: POST
+    Then status: 200
+    And answer: is not empty
+
+  Scenario: Посетить карточку несуществующего пациента
+    Given path: /api/v4/Users(11111111111111111)/Visit
+    And API-token: valid
+    When method: POST
+    Then status: 404
 
   Scenario: Посетить карточку пациента без авторизации
-    Given path /api/v4/Users(1)/Visit
-    And empty API token
-    When method POST
-    Then status 401
+    Given path: /api/v4/Users(1)/Visit
+    And API-token: empty
+    When method: POST
+    Then status: 401
