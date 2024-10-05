@@ -2,6 +2,7 @@ from behave import given, when, then
 import requests
 from api_method import get_token_doc
 from methods import random_user_id, generate_data
+import json
 
 ACCESS_TOKEN = get_token_doc()
 
@@ -44,9 +45,9 @@ def step_impl(context):
     context.body = generate_data()
 
 
-@given("json: {json}")
-def step_impl(context, json):
-    context.body = json
+@given("json: {json_data}")
+def step_impl(context, json_data):
+    context.body = json.loads(json_data)
 
 
 @when("method: {type_request}")

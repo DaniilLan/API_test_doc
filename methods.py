@@ -94,6 +94,5 @@ def generate_data():
             ]
         }
     ]
-
     return data
 

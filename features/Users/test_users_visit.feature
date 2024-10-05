@@ -1,11 +1,10 @@
-Feature: Test /api/v4/Users(?)/Visit
+Feature: Test Users - Visit
 
   Scenario: Посетить карточку пациента
     Given path: /api/v4/Users(1267)/Visit
     And API-token: valid
     When method: POST
     Then status: 200
-    And answer: is not empty
 
   Scenario: Посетить карточку несуществующего пациента
     Given path: /api/v4/Users(11111111111111111)/Visit

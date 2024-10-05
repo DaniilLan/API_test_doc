@@ -1,4 +1,4 @@
-Feature: Test /api/v4/Users(?)
+Feature: Test Users
 
   Scenario: Получить всех пользователей
     Given path: /api/v4/Users/
