@@ -1,4 +1,4 @@
-Feature: Test Users
+Feature: Test Get Users
 
   Scenario: Получить всех пользователей
     Given path: /api/v4/Users/
@@ -30,8 +30,7 @@ Feature: Test Users
     Then status: 401
 
   Scenario: Получить пользователя по id
-    Given valid user_id
-    And path: /api/v4/Users(user_id)
+    Given path: /api/v4/Users(user_id)
     And API-token: valid
     When method: GET
     Then status: 200

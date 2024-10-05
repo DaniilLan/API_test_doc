@@ -1,3 +1,5 @@
+from random import choice
+
 import requests
 from methods import generate_data
 
@@ -43,5 +45,56 @@ def create_measurement():
     else:
         return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
 
+
+def delete_measurement(user_id, measurement_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
+    response = requests.delete(url=url, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            return {"error": "Ошибка декодирования JSON", "response_text": response.text}
+    else:
+        return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
+
+
+def get_id_measurement(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
+    response = requests.get(url=url, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            return {"error": "Ошибка декодирования JSON", "response_text": response.text}
+    else:
+        return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
+
+
+def get_all_id_measurement(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
+    response = requests.get(url=url, headers=headers)
+
+    if response.status_code == 200 or response.status_code == 201:
+        try:
+            data = response.json()
+            # Извлекаем только список id
+            list_id = [measurement['id'] for measurement in data.get('value', [])]
+            return int(choice(list_id))
+        except requests.exceptions.JSONDecodeError:
+            return {"error": "Ошибка декодирования JSON", "response_text": response.text}
+    else:
+        return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
 
 

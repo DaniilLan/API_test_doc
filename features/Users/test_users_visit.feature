@@ -1,4 +1,4 @@
-Feature: Test Users - Visit
+Feature: Test Visit Users
 
   Scenario: Посетить карточку пациента
     Given path: /api/v4/Users(1267)/Visit

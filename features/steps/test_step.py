@@ -1,21 +1,19 @@
+from random import choice
 from behave import given, when, then
 import requests
-from api_method import get_token_doc
+from api_method import get_token_doc, get_all_id_measurement
 from methods import random_user_id, generate_data
 import json
 
 ACCESS_TOKEN = get_token_doc()
 
 
-@given("valid user_id")
-def step_impl(context):
-    context.user_id = random_user_id()
-
-
 @given("path: {path}")
 def step_impl(context, path):
     if "user_id" in path:
-        path = path.replace("user_id", str(context.user_id))
+        path = path.replace("user_id", str(random_user_id()))
+    elif "id_measurements" in path:
+        path = path.replace("id_measurements", str(get_all_id_measurement(1267)))
     context.url = f"http://192.168.7.221:8081{path}"
 
 

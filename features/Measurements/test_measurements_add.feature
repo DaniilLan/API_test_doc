@@ -1,4 +1,4 @@
-Feature: Test Measurements - Telemed.Medworker
+Feature: Test Add Measurements - Telemed.Medworker
 
   Scenario: Добавление измерения
     Given path: /api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements
