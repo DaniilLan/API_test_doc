@@ -1,3 +1,5 @@
+import json
+import re
 from random import choice
 
 import requests

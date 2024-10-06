@@ -2,10 +2,15 @@ from random import choice
 from behave import given, when, then
 import requests
 from api_method import get_token_doc, get_all_id_measurement, get_random_id_measurements
-from methods import random_user_id, generate_data
+from methods import random_user_id, generate_data, get_random_value
 import json
 
 ACCESS_TOKEN = get_token_doc()
+
+
+@given('value = get_random_value()')
+def step_impl(context):
+    context.value = get_random_value()
 
 
 @given("path: {path}")
@@ -58,6 +63,8 @@ def step_impl(context, type_request):
         context.response = requests.put(url=context.url, headers=context.headers)
     elif type_request == 'DELETE':
         context.response = requests.delete(url=context.url, headers=context.headers)
+    elif type_request == 'PATCH':
+        context.response = requests.patch(url=context.url, headers=context.headers, json=context.body)
 
 
 @when("parameters: {key}={value}")

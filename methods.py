@@ -94,3 +94,7 @@ def generate_data():
     ]
     return data
 
+
+def get_random_value():
+    return random.randint(40, 140)
+
