@@ -1,7 +1,7 @@
 from random import choice
 from behave import given, when, then
 import requests
-from api_method import get_token_doc, get_all_id_measurement
+from api_method import get_token_doc, get_all_id_measurement, get_random_id_measurements
 from methods import random_user_id, generate_data
 import json
 
@@ -13,7 +13,7 @@ def step_impl(context, path):
     if "user_id" in path:
         path = path.replace("user_id", str(random_user_id()))
     elif "id_measurements" in path:
-        path = path.replace("id_measurements", str(get_all_id_measurement(1267)))
+        path = path.replace("id_measurements", str(get_random_id_measurements(1267)))
     context.url = f"http://192.168.7.221:8081{path}"
 
 
@@ -74,3 +74,20 @@ def step_impl(context, status):
 def step_impl(context):
     assert context.response.json()["value"] != [], "Response 'value' field is empty"
 
+
+@then("delete new measurements")
+def step_impl(context):
+    context.id_measurements = context.response.json()["value"][0]['id']
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({context.id_measurements})'
+    response = requests.delete(url=url, headers=headers)
+    if response.status_code == 200 or response.status_code == 201:
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            return {"error": "Ошибка декодирования JSON", "response_text": response.text}
+    else:
+        return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}

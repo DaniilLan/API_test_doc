@@ -25,8 +25,6 @@ def random_user_id():
     return random.choice(list_id)
 
 
-import random
-
 def generate_data():
     source_to_types = {
         "thermometer": {

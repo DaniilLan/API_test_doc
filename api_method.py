@@ -89,12 +89,35 @@ def get_all_id_measurement(user_id):
     if response.status_code == 200 or response.status_code == 201:
         try:
             data = response.json()
-            # Извлекаем только список id
             list_id = [measurement['id'] for measurement in data.get('value', [])]
-            return int(choice(list_id))
+            return list_id
         except requests.exceptions.JSONDecodeError:
             return {"error": "Ошибка декодирования JSON", "response_text": response.text}
     else:
         return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
 
 
+def get_random_id_measurements(user_id):
+    return choice(get_all_id_measurement(user_id))
+
+
+def delete_all_measurements(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    measurement_ids = get_all_id_measurement(user_id)
+    if isinstance(measurement_ids, list):
+        for measurement_id in measurement_ids:
+            url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
+            response = requests.delete(url=url, headers=headers)
+
+            if response.status_code == 200 or response.status_code == 201:
+                try:
+                    print(f"Измерение с ID {measurement_id} успешно удалено.")
+                except requests.exceptions.JSONDecodeError:
+                    print(f"Ошибка декодирования JSON при удалении измерения с ID {measurement_id}")
+            else:
+                print(f"Ошибка при удалении измерения с ID {measurement_id}, статус код: {response.status_code}")
+    else:
+        print(f"Ошибка при получении списка измерений: {measurement_ids}")
