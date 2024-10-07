@@ -2,7 +2,7 @@ from random import choice
 from behave import given, when, then
 import requests
 from api_method import get_token_doc, get_all_id_measurement, get_random_id_measurements
-from methods import random_user_id, generate_data, get_random_value
+from methods import random_user_id, generate_data, get_random_value, get_current_time_iso
 import json
 
 ACCESS_TOKEN = get_token_doc()
@@ -20,12 +20,13 @@ def step_impl(context, path):
     elif "id_measurements" in path:
         path = path.replace("id_measurements", str(get_random_id_measurements(1267)))
     context.url = f"http://192.168.7.221:8081{path}"
+    context.body = {}
+    context.params = {}
 
 
 @given("API-token: {type_token}")
 def step_impl(context, type_token):
-    context.body = {}
-    context.params = {}
+
     if type_token == "valid":
         context.headers = {
             "Authorization": f"Bearer {ACCESS_TOKEN}",
@@ -50,7 +51,11 @@ def step_impl(context):
 
 @given("json: {json_data}")
 def step_impl(context, json_data):
-    context.body = json.loads(json_data)
+    if "current_time" in json_data:
+        context.body = json_data.replace("current_time", str(get_current_time_iso()))
+        context.body = json.loads(context.body)
+    else:
+        context.body = json.loads(json_data)
 
 
 @when("method: {type_request}")
@@ -67,6 +72,12 @@ def step_impl(context, type_request):
         context.response = requests.patch(url=context.url, headers=context.headers, json=context.body)
 
 
+@when("get: response.json()[{value}]")
+def step_impl(context, value):
+    context.value_before = context.body[value]
+    context.value_after = context.response.json()[value]
+
+
 @when("parameters: {key}={value}")
 def step_impl(context, key, value):
     context.params[key] = value
@@ -74,7 +85,17 @@ def step_impl(context, key, value):
 
 @then("status: {status}")
 def step_impl(context, status):
-    assert context.response.status_code == int(status), f"Expected status code {status}, but got {context.response.status_code}"
+    assert context.response.status_code == int(status), (
+        f"Expected status code {status}, but got {context.response.status_code}")
+
+
+@then("check: value_before == value.after")
+def check_value(context):
+    assert context.value_before == context.value_after, (f"Значение в ответе не соответствует значению в запросе."
+                                                         f"\n"
+                                                         f"запрос = {context.value_before} "
+                                                         f"\n"
+                                                         f"ответ = {context.value_after}")
 
 
 @then("answer: is not empty")

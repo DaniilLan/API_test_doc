@@ -123,3 +123,45 @@ def delete_all_measurements(user_id):
                 print(f"Ошибка при удалении измерения с ID {measurement_id}, статус код: {response.status_code}")
     else:
         print(f"Ошибка при получении списка измерений: {measurement_ids}")
+
+
+def change_measurement():
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('{"id": 0, '
+                      '"created": "2024-05-01T09:56:01.623Z", '
+                      '"source": "urine-analyzer", '
+                      '"type": "temperature", '
+                      '"value": "100", '
+                      '"parameters": [{"type": "app.comment", "value": "string123"}]}')
+    url = f"http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements(2559)"
+    response = requests.patch(url=url, headers=headers, json=body)
+    return response.json()
+
+
+def create_user():
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('{"firstName": "Михаил",'
+                        '"lastName": "Макаров",'
+                        '"orgId": 103,'
+                        '"birthDate": "2024-10-07T08:07:18.113Z",'
+                        '"role": "doctor",'
+                        '"phone": "9988888888",'
+                        '"middleName": "Тест",'
+                        '"email": "asdasd@asd.asd",'
+                        '"password": "asd123",'
+                        '"username": "string",'
+                        '"sex": "male",'
+                        '"height": 100,'
+                        '"weight": 100,'
+                        '"avatar": "1"}')
+    url = f"http://192.168.7.221:8081/api/v4/User/Register"
+    response = requests.post(url=url, headers=headers, json=body)
+    return response
+
+print(create_user())

@@ -1,4 +1,5 @@
 import random
+from datetime import datetime, timezone
 
 
 def random_user_id():
@@ -98,3 +99,8 @@ def generate_data():
 def get_random_value():
     return random.randint(40, 140)
 
+
+def get_current_time_iso():
+    current_time = datetime.now(timezone.utc)
+    milliseconds = round(current_time.microsecond / 1000)
+    return current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'

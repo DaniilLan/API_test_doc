@@ -11,7 +11,7 @@ Feature: Test Get Users
     Given path: /api/v4/Users/
     And API-token: valid
     When method: GET
-    When parameters: count=true
+    And parameters: count=false
     Then status: 200
     And answer: is not empty
 
@@ -19,7 +19,7 @@ Feature: Test Get Users
     Given path: /api/v4/Users/
     And API-token: valid
     When method: GET
-    When parameters: top=10
+    And parameters: top=10
     Then status: 200
     And answer: is not empty
 
