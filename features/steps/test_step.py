@@ -2,7 +2,7 @@ from random import choice
 from behave import given, when, then
 import requests
 from api_method import get_token_doc, get_all_id_measurement, get_random_id_measurements
-from methods import random_user_id, generate_data, get_random_value, get_current_time_iso
+from methods import random_user_id, generate_data_measurement, get_random_value, get_current_time_iso
 import json
 
 ACCESS_TOKEN = get_token_doc()
@@ -46,7 +46,7 @@ def step_impl(context, type_token):
 
 @given("json: create measurements")
 def step_impl(context):
-    context.body = generate_data()
+    context.body = generate_data_measurement()
 
 
 @given("json: {json_data}")

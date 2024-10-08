@@ -3,11 +3,26 @@ import re
 from random import choice
 
 import requests
-from methods import generate_data
+from methods import generate_data_measurement
 
 
 def get_token_doc():
     login = "landan2001@mail.ru"
+    password = "12345678"
+    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    headers = {
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    data = {
+        'email': login,
+        'password': password,
+    }
+    response = requests.post(url=req_url, headers=headers, json=data)
+    return response.json()["accessToken"]
+
+
+def get_token_adm():
+    login = "TestLanAdm@mail.ru"
     password = "12345678"
     req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
     headers = {
@@ -37,7 +52,7 @@ def create_measurement():
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
     url = 'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements'
-    data = generate_data()
+    data = generate_data_measurement()
     response = requests.post(url=url, headers=headers, json=data)
     if response.status_code == 200 or response.status_code == 201:
         try:
@@ -143,25 +158,16 @@ def change_measurement():
 
 def create_user():
     headers = {
-        "Authorization": f"Bearer {get_token_doc()}",
+        "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName": "Михаил",'
-                        '"lastName": "Макаров",'
-                        '"orgId": 103,'
-                        '"birthDate": "2024-10-07T08:07:18.113Z",'
-                        '"role": "doctor",'
-                        '"phone": "9988888888",'
-                        '"middleName": "Тест",'
-                        '"email": "asdasd@asd.asd",'
-                        '"password": "asd123",'
-                        '"username": "string",'
-                        '"sex": "male",'
-                        '"height": 100,'
-                        '"weight": 100,'
-                        '"avatar": "1"}')
-    url = f"http://192.168.7.221:8081/api/v4/User/Register"
+    body = json.loads('{"firstName": "Немихаил","lastName": "Макаров", "orgId": 101, "birthDate": '
+                      '"2024-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
+                      '"email": "asdasd2@asd.asd", "password": "asd123", "username": "string", "sex": "male", '
+                      '"height": 100, "weight": 100, "avatar": "1"}')
+    url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
     return response
+
 
 print(create_user())

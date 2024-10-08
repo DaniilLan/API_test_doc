@@ -26,7 +26,7 @@ def random_user_id():
     return random.choice(list_id)
 
 
-def generate_data():
+def generate_data_measurement():
     source_to_types = {
         "thermometer": {
             "type": "temperature",
