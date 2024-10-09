@@ -1,9 +1,10 @@
 import json
 import re
+import time
 from random import choice
 
 import requests
-from methods import generate_data_measurement
+from methods import *
 
 
 def get_token_doc():
@@ -156,18 +157,41 @@ def change_measurement():
     return response.json()
 
 
-def create_user():
+def create_doctor():
     headers = {
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName": "Немихаил","lastName": "Макаров", "orgId": 101, "birthDate": '
-                      '"2024-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
-                      '"email": "asdasd2@asd.asd", "password": "asd123", "username": "string", "sex": "male", '
-                      '"height": 100, "weight": 100, "avatar": "1"}')
+    body = json.loads(f'{"{"}"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": '
+                      f'"2001-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
+                      f'"email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", '
+                      f'"height": 100, "weight": 100, "avatar": "None"{"}"}')
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
+    return response.json()["id"]
+
+
+def change_doctor():
+    headers = {
+        "Authorization": f"Bearer {get_token_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('{"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": '
+                      '"2001-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
+                      '"email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", '
+                      '"height": 100, "weight": 100, "avatar": "None"}')
+    url = f"http://192.168.7.221:8081/api/v4/Users"
+    response = requests.patch(url=url, headers=headers, json=body)
+    return response.json()
+
+
+def delete_user(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
+    response = requests.delete(url=url, headers=headers)
     return response
 
 
-print(create_user())

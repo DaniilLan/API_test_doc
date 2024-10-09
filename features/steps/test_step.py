@@ -1,16 +1,23 @@
 from random import choice
 from behave import given, when, then
 import requests
-from api_method import get_token_doc, get_all_id_measurement, get_random_id_measurements
-from methods import random_user_id, generate_data_measurement, get_random_value, get_current_time_iso
+from api_method import *
+from methods import *
 import json
 
-ACCESS_TOKEN = get_token_doc()
+ACCESS_TOKEN_DOCTOR = get_token_doc()
+ACCESS_TOKEN_ADMIN = get_token_adm()
 
 
 @given('value = get_random_value()')
 def step_impl(context):
     context.value = get_random_value()
+
+
+@given("create: {role_user}")
+def step_iml(context, role_user):
+    if role_user == "doctor":
+        context.doctor_id = create_doctor()
 
 
 @given("path: {path}")
@@ -19,6 +26,8 @@ def step_impl(context, path):
         path = path.replace("user_id", str(random_user_id()))
     elif "id_measurements" in path:
         path = path.replace("id_measurements", str(get_random_id_measurements(1267)))
+    elif "doctor_id" in path:
+        path = path.replace("doctor_id", str(context.doctor_id))
     context.url = f"http://192.168.7.221:8081{path}"
     context.body = {}
     context.params = {}
@@ -27,9 +36,14 @@ def step_impl(context, path):
 @given("API-token: {type_token}")
 def step_impl(context, type_token):
 
-    if type_token == "valid":
+    if type_token == "doctor":
         context.headers = {
-            "Authorization": f"Bearer {ACCESS_TOKEN}",
+            "Authorization": f"Bearer {ACCESS_TOKEN_DOCTOR}",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        }
+    if type_token == "admin":
+        context.headers = {
+            "Authorization": f"Bearer {ACCESS_TOKEN_ADMIN}",
             'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
         }
     elif type_token == "invalid":
@@ -119,3 +133,10 @@ def step_impl(context):
             return {"error": "Ошибка декодирования JSON", "response_text": response.text}
     else:
         return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
+
+
+@then("delete: {role_user}")
+def step_iml(context, role_user):
+    if role_user == "doctor":
+        delete_user(context.doctor_id)
+
