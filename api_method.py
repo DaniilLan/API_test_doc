@@ -47,17 +47,17 @@ def get_users():
     return user_ids
 
 
-def create_measurement():
+def create_measurement(patient_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = 'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements'
+    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({patient_id})/MedicalCard/Measurements'
     data = generate_data_measurement()
     response = requests.post(url=url, headers=headers, json=data)
     if response.status_code == 200 or response.status_code == 201:
         try:
-            return response.json()
+            return response.json()['value'][0]['id']
         except requests.exceptions.JSONDecodeError:
             return {"error": "Ошибка декодирования JSON", "response_text": response.text}
     else:
@@ -185,9 +185,32 @@ def change_doctor():
     return response.json()
 
 
+def create_patient():
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('{"firstName":"Ярослав","lastName":"Ефимов","middleName":"Владимирович","height":177,'
+                      f'"weight":70,"email":"{random_mail()}","phone":"7887787764","birthDate":"1999-05-07",'
+                      '"sex":"male","orgId":3,"role":"patient","id":null}')
+    url = f"http://192.168.7.221:8081/api/v4/Users/Register"
+    response = requests.post(url=url, headers=headers, json=body)
+    return response.json()['id']
+
+
 def delete_user(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
+    response = requests.delete(url=url, headers=headers)
+    return response
+
+
+def delete_patient(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
     url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"

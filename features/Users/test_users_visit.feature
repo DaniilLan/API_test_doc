@@ -2,13 +2,13 @@ Feature: Test Visit Users
 
   Scenario: Посетить карточку пациента
     Given path: /api/v4/Users(1267)/Visit
-    And API-token: valid
+    And API-token: doctor
     When method: POST
     Then status: 200
 
   Scenario: Посетить карточку несуществующего пациента
     Given path: /api/v4/Users(11111111111111111)/Visit
-    And API-token: valid
+    And API-token: doctor
     When method: POST
     Then status: 404
 

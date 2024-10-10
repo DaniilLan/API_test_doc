@@ -1,5 +1,5 @@
 from random import choice
-from behave import given, when, then
+from behave import given, when, then, fixture, use_fixture
 import requests
 from api_method import *
 from methods import *
@@ -18,16 +18,23 @@ def step_impl(context):
 def step_iml(context, role_user):
     if role_user == "doctor":
         context.doctor_id = create_doctor()
+    elif role_user == "patient":
+        context.patient_id = create_patient()
 
 
 @given("path: {path}")
 def step_impl(context, path):
     if "user_id" in path:
-        path = path.replace("user_id", str(random_user_id()))
-    elif "id_measurements" in path:
-        path = path.replace("id_measurements", str(get_random_id_measurements(1267)))
+        path = path.replace("user_id", str(context.user_id))
+    elif "patient_id" and "measurement_id" in path:
+        path = path.replace("patient_id", str(context.patient_id))
+        path = path.replace("measurement_id", str(context.measurement_id))
+    elif "measurement_id" in path:
+        path = path.replace("measurement_id", str(context.measurement_id))
     elif "doctor_id" in path:
         path = path.replace("doctor_id", str(context.doctor_id))
+    elif "patient_id" in path:
+        path = path.replace("patient_id", str(context.patient_id))
     context.url = f"http://192.168.7.221:8081{path}"
     context.body = {}
     context.params = {}
@@ -35,7 +42,6 @@ def step_impl(context, path):
 
 @given("API-token: {type_token}")
 def step_impl(context, type_token):
-
     if type_token == "doctor":
         context.headers = {
             "Authorization": f"Bearer {ACCESS_TOKEN_DOCTOR}",
@@ -100,16 +106,22 @@ def step_impl(context, key, value):
 @then("status: {status}")
 def step_impl(context, status):
     assert context.response.status_code == int(status), (
-        f"Expected status code {status}, but got {context.response.status_code}")
+        f"Expected status code {status}, but got {context.response.status_code}"
+        f"\n"
+        f"Response: {context.response.json()}")
 
 
-@then("check: value_before == value.after")
-def check_value(context):
-    assert context.value_before == context.value_after, (f"Значение в ответе не соответствует значению в запросе."
-                                                         f"\n"
-                                                         f"запрос = {context.value_before} "
-                                                         f"\n"
-                                                         f"ответ = {context.value_after}")
+@then("check: value_before {tupy_comparison} value.after")
+def check_value(context, tupy_comparison):
+    examination = (f"Значение в ответе не соответствует значению в запросе."
+                   f"\n"
+                   f"запрос = {context.value_before} "
+                   f"\n"
+                   f"ответ = {context.value_after}")
+    if tupy_comparison == '==':
+        assert context.value_before == context.value_after, f"{examination}"
+    elif tupy_comparison == '!=':
+        assert context.value_before != context.value_after, f"{examination}"
 
 
 @then("answer: is not empty")
@@ -139,4 +151,3 @@ def step_impl(context):
 def step_iml(context, role_user):
     if role_user == "doctor":
         delete_user(context.doctor_id)
-

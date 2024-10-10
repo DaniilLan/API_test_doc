@@ -1,4 +1,5 @@
 import random
+import string
 from datetime import datetime, timezone
 from russian_names import RussianNames
 
@@ -104,7 +105,8 @@ def get_random_value():
 def get_current_time_iso():
     current_time = datetime.now(timezone.utc)
     milliseconds = round(current_time.microsecond / 1000)
-    return current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'
+    current_time = current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'
+    return current_time.replace("0Z", 'Z')
 
 
 def random_phone():
@@ -117,7 +119,7 @@ def random_phone():
     return numbers_str
 
 
-def random_fio(value='I'):
+def random_fio(value='FIO'):
     """Создание рандомого ФИО
 
     Указать в параметре нужное значение ФИО.
@@ -146,3 +148,10 @@ def random_fio(value='I'):
         patronymic = fio.split()
         fio = str(patronymic[1])
     return fio
+
+
+def random_mail():
+    """Создание рандомного mail"""
+    mail = ''.join(random.choice(string.ascii_letters) for _ in range(8)) + str(random.randint(1, 1000)) + "@gmail.com"
+    return mail
+

@@ -2,14 +2,14 @@ Feature: Test Get Users
 
   Scenario: Получить всех пользователей
     Given path: /api/v4/Users/
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     Then status: 200
     And answer: is not empty
 
   Scenario: Получить всех пользователей используя count=true
     Given path: /api/v4/Users/
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     And parameters: count=false
     Then status: 200
@@ -17,7 +17,7 @@ Feature: Test Get Users
 
   Scenario: Получить 10 пользователей используя top=10
     Given path: /api/v4/Users/
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     And parameters: top=10
     Then status: 200
@@ -31,25 +31,25 @@ Feature: Test Get Users
 
   Scenario: Получить пользователя по id
     Given path: /api/v4/Users(user_id)
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     Then status: 200
 
   Scenario: Получить пользователя не указав id
     Given path: /api/v4/Users()/
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     Then status: 404
 
   Scenario: Получить не существующего пользователя
     Given path: /api/v4/Users(122222222)
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     Then status: 404
 
   Scenario: Получить пользователя с ошибкой в запросе
     Given path: /api/v4/Users(qwe)
-    And API-token: valid
+    And API-token: doctor
     When method: GET
     Then status: 400
 
