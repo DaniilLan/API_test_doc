@@ -216,5 +216,3 @@ def delete_patient(user_id):
     url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
     response = requests.delete(url=url, headers=headers)
     return response
-
-

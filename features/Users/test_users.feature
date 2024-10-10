@@ -29,8 +29,18 @@ Feature: Test Get Users
     When method: GET
     Then status: 401
 
-  Scenario: Получить пользователя по id
-    Given path: /api/v4/Users(user_id)
+  @before.create.doctor
+  @after.delete.doctor
+  Scenario: Получить пользователя (doctor) по id
+    Given path: /api/v4/Users(doctor_id)
+    And API-token: admin
+    When method: GET
+    Then status: 200
+
+  @before.create.patient
+  @after.delete.patient
+  Scenario: Получить пользователя (patient) по id
+    Given path: /api/v4/Users(patient_id)
     And API-token: doctor
     When method: GET
     Then status: 200

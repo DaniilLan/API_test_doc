@@ -14,26 +14,13 @@ def step_impl(context):
     context.value = get_random_value()
 
 
-@given("create: {role_user}")
-def step_iml(context, role_user):
-    if role_user == "doctor":
-        context.doctor_id = create_doctor()
-    elif role_user == "patient":
-        context.patient_id = create_patient()
-
-
 @given("path: {path}")
 def step_impl(context, path):
-    if "user_id" in path:
-        path = path.replace("user_id", str(context.user_id))
-    elif "patient_id" and "measurement_id" in path:
-        path = path.replace("patient_id", str(context.patient_id))
+    if "measurement_id" in path:
         path = path.replace("measurement_id", str(context.measurement_id))
-    elif "measurement_id" in path:
-        path = path.replace("measurement_id", str(context.measurement_id))
-    elif "doctor_id" in path:
+    if "doctor_id" in path:
         path = path.replace("doctor_id", str(context.doctor_id))
-    elif "patient_id" in path:
+    if "patient_id" in path:
         path = path.replace("patient_id", str(context.patient_id))
     context.url = f"http://192.168.7.221:8081{path}"
     context.body = {}

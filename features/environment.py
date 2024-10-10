@@ -6,10 +6,10 @@ def before(context, type_s_f):
     if 'before.create.doctor' in type_s_f.tags:
         context.doctor_id = create_doctor()
         return context.doctor_id
-    elif 'before.create.patient' in type_s_f.tags:
+    if 'before.create.patient' in type_s_f.tags:
         context.patient_id = create_patient()
         return context.patient_id
-    elif 'before.create.measurement' in type_s_f.tags:
+    if 'before.create.measurement' in type_s_f.tags:
         context.measurement_id = create_measurement(context.patient_id)
         return context.measurement_id
 
@@ -18,12 +18,12 @@ def after(context, type_s_f):
     if 'after.delete.doctor' in type_s_f.tags:
         if hasattr(context, 'doctor_id'):
             delete_user(context.doctor_id)
-    elif 'after.delete.patient' in type_s_f.tags:
+    if 'after.delete.patient' in type_s_f.tags:
         if hasattr(context, 'patient_id'):
             delete_patient(context.patient_id)
-    elif 'after.delete_measurement' in type_s_f.tags:
+    if 'after.delete_measurement' in type_s_f.tags:
         if hasattr(context, 'measurement_id'):
-            delete_measurement(context.measurement_id)
+            delete_measurement(context.patient_id, context.measurement_id)
 
 
 def before_scenario(context, scenario):
