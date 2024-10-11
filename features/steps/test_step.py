@@ -29,6 +29,11 @@ def step_impl(context, path):
 
 @given("API-token: {type_token}")
 def step_impl(context, type_token):
+    if type_token == "new_token":
+        context.headers = {
+            "Authorization": f"Bearer {context.new_token}",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        }
     if type_token == "doctor":
         context.headers = {
             "Authorization": f"Bearer {ACCESS_TOKEN_DOCTOR}",
@@ -94,8 +99,16 @@ def step_impl(context, key, value):
 def step_impl(context, status):
     assert context.response.status_code == int(status), (
         f"Expected status code {status}, but got {context.response.status_code}"
-        f"\n"
-        f"Response: {context.response.json()}")
+    )
+    try:
+        response_json = context.response.json()
+    except requests.exceptions.JSONDecodeError:
+        response_json = "Unable to decode JSON. Response content: " + context.response.text
+    assert context.response.status_code == int(status), (
+        f"Expected status code {status}, but got {context.response.status_code}"
+        f"n"
+        f"Response: {response_json}"
+    )
 
 
 @then("check: value_before {tupy_comparison} value.after")

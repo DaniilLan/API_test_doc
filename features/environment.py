@@ -5,13 +5,11 @@ from api_method import *
 def before(context, type_s_f):
     if 'before.create.doctor' in type_s_f.tags:
         context.doctor_id = create_doctor()
-        return context.doctor_id
+        context.new_token = get_token_user()
     if 'before.create.patient' in type_s_f.tags:
         context.patient_id = create_patient()
-        return context.patient_id
     if 'before.create.measurement' in type_s_f.tags:
         context.measurement_id = create_measurement(context.patient_id)
-        return context.measurement_id
 
 
 def after(context, type_s_f):
