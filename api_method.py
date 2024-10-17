@@ -1,6 +1,4 @@
 import json
-import re
-import time
 from random import choice
 
 import requests
@@ -231,5 +229,17 @@ def delete_patient(user_id):
     url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
     response = requests.delete(url=url, headers=headers)
     return response
+
+
+def change_status(user_id, status):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:5001/api/v4/Users({user_id})/ChangeStatus(status={status})"
+    response = requests.post(url=url, headers=headers)
+    return response
+
+
 
 

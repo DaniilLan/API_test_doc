@@ -5,7 +5,7 @@ Feature: Test Get Users
     And API-token: doctor
     When method: GET
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   Scenario: Получить всех пользователей используя count=true
     Given path: /api/v4/Users/
@@ -13,7 +13,7 @@ Feature: Test Get Users
     When method: GET
     And parameters: count=false
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   Scenario: Получить 10 пользователей используя top=10
     Given path: /api/v4/Users/
@@ -21,7 +21,7 @@ Feature: Test Get Users
     When method: GET
     And parameters: top=10
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   Scenario: Получить всех пользователей без авторизации
     Given path: /api/v4/Users/

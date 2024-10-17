@@ -5,14 +5,14 @@ Feature: Получение списка измерений
     And API-token: doctor
     When method: GET
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   Scenario: Получение списка измерений
     Given path: /api/v4/Measurements
     And API-token: doctor
     When method: GET
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
 
   Scenario: Получение списка измерений

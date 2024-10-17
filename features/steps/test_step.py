@@ -124,30 +124,9 @@ def check_value(context, tupy_comparison):
         assert context.value_before != context.value_after, f"{examination}"
 
 
-@then("answer: is not empty")
-def step_impl(context):
-    assert context.response.json()["value"] != [], "Response 'value' field is empty"
-
-
-@then("delete new measurements")
-def step_impl(context):
-    context.id_measurements = context.response.json()["value"][0]['id']
-    headers = {
-        "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
-    }
-    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({context.id_measurements})'
-    response = requests.delete(url=url, headers=headers)
-    if response.status_code == 200 or response.status_code == 201:
-        try:
-            return response.json()
-        except requests.exceptions.JSONDecodeError:
-            return {"error": "Ошибка декодирования JSON", "response_text": response.text}
-    else:
-        return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
-
-
-@then("delete: {role_user}")
-def step_iml(context, role_user):
-    if role_user == "doctor":
-        delete_user(context.doctor_id)
+@then("response {type_resp}: is not empty")
+def step_impl(context, type_resp):
+    if type_resp == 'json':
+        assert context.response.json() != [], "Json ответа пустой."
+    if type_resp == 'text':
+        assert context.response.text != [], "Text ответа пустой."

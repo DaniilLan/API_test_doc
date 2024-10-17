@@ -35,7 +35,6 @@ Feature: Изменение измерения
     And API-token: doctor
     When method: PATCH
     Then status: 400
-    # Статус код должен быть 404
 
   Scenario: Изменение не существующего измерения измерении
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements(йцуйцу)

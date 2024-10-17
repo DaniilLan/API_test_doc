@@ -8,7 +8,7 @@ Feature: Получение измерения по ID
     And API-token: doctor
     When method: GET
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   @before.create.measurement
   Scenario: Получение измерения по ID через Measurements/<key>
@@ -16,7 +16,7 @@ Feature: Получение измерения по ID
     And API-token: doctor
     When method: GET
     Then status: 200
-    And answer: is not empty
+    And response json: is not empty
 
   Scenario: Получение измерения не указав ID измерения
     Given path: /api/v4/Measurements()
