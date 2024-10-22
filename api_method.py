@@ -20,9 +20,24 @@ def get_token_user():
     return response.json()["accessToken"]
 
 
+def get_token_sup_adm():
+    login = "admin"
+    password = "test"
+    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    headers = {
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    data = {
+        'email': login,
+        'password': password,
+    }
+    response = requests.post(url=req_url, headers=headers, json=data)
+    return response.json()["accessToken"]
+
+
 def get_token_doc():
     login = "landan2001@mail.ru"
-    password = "12345678"
+    password = "123456789"
     req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
     headers = {
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
@@ -241,5 +256,24 @@ def change_status(user_id, status):
     return response
 
 
+def create_org():
+    headers = {
+        "Authorization": f"Bearer {get_token_sup_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:5001/api/v4/Organizations"
+    body = json.loads('{"name": "Тестовая Орг", "address": "Самара123", "idExt": "99", "email": "apiorg@api.org", '
+                      '"phone": "8999966544", "parentId": 100}')
+    response = requests.post(url=url, headers=headers, json=body)
+    return response.json()['id']
 
+
+def delete_org(org_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_sup_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:5001/api/v4/Organizations({org_id})"
+    response = requests.delete(url=url, headers=headers)
+    return response
 

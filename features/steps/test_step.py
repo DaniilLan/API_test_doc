@@ -22,6 +22,8 @@ def step_impl(context, path):
         path = path.replace("doctor_id", str(context.doctor_id))
     if "patient_id" in path:
         path = path.replace("patient_id", str(context.patient_id))
+    if "org_id" in path:
+        path = path.replace("org_id", str(context.org_id))
     context.url = f"http://192.168.7.221:8081{path}"
     context.body = {}
     context.params = {}
@@ -61,6 +63,11 @@ def step_impl(context):
     context.body = generate_data_measurement()
 
 
+@given("parameters: {key}={value}")
+def step_impl(context, key, value):
+    context.params[key] = value
+
+
 @given("json: {json_data}")
 def step_impl(context, json_data):
     if "current_time" in json_data:
@@ -88,11 +95,6 @@ def step_impl(context, type_request):
 def step_impl(context, value):
     context.value_before = context.body[value]
     context.value_after = context.response.json()[value]
-
-
-@when("parameters: {key}={value}")
-def step_impl(context, key, value):
-    context.params[key] = value
 
 
 @then("status: {status}")

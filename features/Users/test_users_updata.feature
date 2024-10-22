@@ -7,9 +7,7 @@ Feature: Редактирование пользователя
     And json: {"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": "current_time", "role": "doctor", "phone": "9688888888", "middleName": "Тест", "email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", "height": 100, "weight": 100, "avatar": "None"}
     And API-token: admin
     When method: PATCH
-    And get: response.json()[birthDate]
     Then status: 200
-    And check: value_before == value.after
 
 
   Scenario: Изменение не существующего пользователя

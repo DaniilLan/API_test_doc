@@ -10,16 +10,16 @@ Feature: Test Get Users
   Scenario: Получить всех пользователей используя count=true
     Given path: /api/v4/Users/
     And API-token: doctor
+    And parameters: count=true
     When method: GET
-    And parameters: count=false
     Then status: 200
     And response json: is not empty
 
   Scenario: Получить 10 пользователей используя top=10
     Given path: /api/v4/Users/
     And API-token: doctor
-    When method: GET
     And parameters: top=10
+    When method: GET
     Then status: 200
     And response json: is not empty
 

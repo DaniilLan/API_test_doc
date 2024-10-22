@@ -1,8 +1,9 @@
 Feature: Получение списка измерений
 
   Scenario: Получение списка измерений с фильтром
-    Given path: /api/v4/Measurements?count=true
+    Given path: /api/v4/Measurements
     And API-token: doctor
+    And parameters: count=true
     When method: GET
     Then status: 200
     And response json: is not empty
