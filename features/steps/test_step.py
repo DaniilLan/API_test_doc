@@ -99,16 +99,13 @@ def step_impl(context, value):
 
 @then("status: {status}")
 def step_impl(context, status):
-    assert context.response.status_code == int(status), (
-        f"Expected status code {status}, but got {context.response.status_code}"
-    )
     try:
         response_json = context.response.json()
     except requests.exceptions.JSONDecodeError:
         response_json = "Unable to decode JSON. Response content: " + context.response.text
     assert context.response.status_code == int(status), (
         f"Expected status code {status}, but got {context.response.status_code}"
-        f"n"
+        f"\n"
         f"Response: {response_json}"
     )
 

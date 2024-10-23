@@ -1,7 +1,7 @@
 import random
 import string
-from datetime import datetime, timezone
 from russian_names import RussianNames
+from datetime import datetime, timedelta, timezone
 
 
 def random_user_id():
@@ -102,11 +102,11 @@ def get_random_value():
     return random.randint(40, 140)
 
 
-def get_current_time_iso():
-    current_time = datetime.now(timezone.utc)
+def get_current_time_iso(hours_to_add=0):
+    current_time = datetime.now(timezone.utc) + timedelta(hours=hours_to_add)
     milliseconds = round(current_time.microsecond / 1000)
-    current_time = current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'
-    return current_time.replace("0Z", 'Z')
+    current_time_iso = current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'
+    return current_time_iso.replace("0Z", 'Z')
 
 
 def random_phone():

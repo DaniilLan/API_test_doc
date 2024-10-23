@@ -10,6 +10,8 @@
       <sourceFolder url="file://$MODULE_DIR$/features/Organization" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/features/Test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/features/Notifications" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/features/MeetingUser" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/features/Metadata" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.12 (API_test_doc)" jdkType="Python SDK" />

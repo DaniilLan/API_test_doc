@@ -12,6 +12,8 @@ def before(context, type_s_f):
         context.measurement_id = create_measurement(context.patient_id)
     if 'before.create.org' in type_s_f.tags:
         context.org_id = create_org()
+    if 'before.create.meeting' in type_s_f.tags:
+        context.meeting_id = create_meetings(context.doctor_id)
 
 
 def after(context, type_s_f):
@@ -27,6 +29,9 @@ def after(context, type_s_f):
     if 'after.delete_org' in type_s_f.tags:
         if hasattr(context, 'org_id'):
             delete_org(context.org_id)
+    if 'after.delete_meeting' in type_s_f.tags:
+        if hasattr(context, 'meeting_id'):
+            delete_meeting(context.meeting_id)
 
 
 def before_scenario(context, scenario):

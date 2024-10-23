@@ -277,3 +277,28 @@ def delete_org(org_id):
     response = requests.delete(url=url, headers=headers)
     return response
 
+
+def create_meetings(doctor_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Me/Meetings"
+    body = json.loads('{"name": "Апи встреча", "description": "Тестирование", '
+                      f'"startDate": "{get_current_time_iso()}", '
+                      f'"endDate": "{get_current_time_iso(1)}", "invitedUserIds": [{doctor_id}]'
+                      '}')
+    response = requests.post(url=url, headers=headers, json=body)
+    return response.json()['id']
+
+
+def delete_meeting(meeting_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
+    response = requests.delete(url=url, headers=headers)
+    return response
+
+
