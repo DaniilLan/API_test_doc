@@ -220,7 +220,7 @@ def create_patient():
     }
     body = json.loads('{"firstName":"Ярослав","lastName":"Ефимов","middleName":"Владимирович","height":177,'
                       f'"weight":70,"email":"{random_mail()}","phone":"7887787764","birthDate":"1999-05-07",'
-                      '"sex":"male","orgId":3,"role":"patient","id":null}')
+                      '"sex":"male","orgId":3,"role":"patient","id":2424}')
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
@@ -302,3 +302,5 @@ def delete_meeting(meeting_id):
     return response
 
 
+# print(delete_measurement(2489, 3786))
+# print(delete_patient(2489))

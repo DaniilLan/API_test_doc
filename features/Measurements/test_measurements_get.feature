@@ -3,6 +3,7 @@
 Feature: Получение измерения по ID
 
   @before.create.measurement
+  @after.delete.measurement
   Scenario: Получение измерения по ID через Measurements(<key>)
     Given path: /api/v4/Measurements(measurement_id)
     And API-token: doctor
@@ -11,6 +12,7 @@ Feature: Получение измерения по ID
     And response json: is not empty
 
   @before.create.measurement
+  @after.delete.measurement
   Scenario: Получение измерения по ID через Measurements/<key>
     Given path: /api/v4/Measurements/measurement_id
     And API-token: doctor

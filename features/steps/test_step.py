@@ -24,6 +24,8 @@ def step_impl(context, path):
         path = path.replace("patient_id", str(context.patient_id))
     if "org_id" in path:
         path = path.replace("org_id", str(context.org_id))
+    if "meeting_id" in path:
+        path = path.replace("meeting_id", str(context.meeting_id))
     context.url = f"http://192.168.7.221:8081{path}"
     context.body = {}
     context.params = {}
@@ -91,10 +93,13 @@ def step_impl(context, type_request):
         context.response = requests.patch(url=context.url, headers=context.headers, json=context.body)
 
 
-@when("get: response.json()[{value}]")
+@then("get: response.json()[{value}]")
 def step_impl(context, value):
-    context.value_before = context.body[value]
-    context.value_after = context.response.json()[value]
+    if value == "measurement_id":
+        context.measurement_id = context.response.json()['id']
+    else:
+        context.value_before = context.body[value]
+        context.value_after = context.response.json()[value]
 
 
 @then("status: {status}")
