@@ -251,7 +251,7 @@ def change_status(user_id, status):
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:5001/api/v4/Users({user_id})/ChangeStatus(status={status})"
+    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})/ChangeStatus(status={status})"
     response = requests.post(url=url, headers=headers)
     return response
 
@@ -261,7 +261,7 @@ def create_org():
         "Authorization": f"Bearer {get_token_sup_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:5001/api/v4/Organizations"
+    url = f"http://192.168.7.221:8081/api/v4/Organizations"
     body = json.loads('{"name": "Тестовая Орг", "address": "Самара123", "idExt": "99", "email": "apiorg@api.org", '
                       '"phone": "8999966544", "parentId": 100}')
     response = requests.post(url=url, headers=headers, json=body)
@@ -273,7 +273,7 @@ def delete_org(org_id):
         "Authorization": f"Bearer {get_token_sup_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:5001/api/v4/Organizations({org_id})"
+    url = f"http://192.168.7.221:8081/api/v4/Organizations({org_id})"
     response = requests.delete(url=url, headers=headers)
     return response
 
@@ -302,5 +302,5 @@ def delete_meeting(meeting_id):
     return response
 
 
-# print(delete_measurement(2489, 3786))
-# print(delete_patient(2489))
+#print(delete_measurement(2493, 3787))
+# print(delete_patient(2494))

@@ -93,10 +93,10 @@ def step_impl(context, type_request):
         context.response = requests.patch(url=context.url, headers=context.headers, json=context.body)
 
 
-@then("get: response.json()[{value}]")
+@when("get: response.json()[{value}]")
 def step_impl(context, value):
     if value == "measurement_id":
-        context.measurement_id = context.response.json()['id']
+        context.measurement_id = context.response.json()['value'][0]['id']
     else:
         context.value_before = context.body[value]
         context.value_after = context.response.json()[value]
