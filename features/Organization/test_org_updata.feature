@@ -1,7 +1,7 @@
 Feature: Редактирование организации
 
   @before.create.org
-  @after.delete_org
+  @after.delete.org
   Scenario: Редактирование организации
     Given path: /api/v4/Organizations(org_id)
     And API-token: doctor

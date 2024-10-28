@@ -60,11 +60,6 @@ def step_impl(context, type_token):
         }
 
 
-@given("json: create measurements")
-def step_impl(context):
-    context.body = generate_data_measurement()
-
-
 @given("parameters: {key}={value}")
 def step_impl(context, key, value):
     context.params[key] = value
@@ -72,11 +67,23 @@ def step_impl(context, key, value):
 
 @given("json: {json_data}")
 def step_impl(context, json_data):
-    if "current_time" in json_data:
-        context.body = json_data.replace("current_time", str(get_current_time_iso()))
-        context.body = json.loads(context.body)
-    else:
-        context.body = json.loads(json_data)
+    if "create measurements" in json_data:
+        json_data = json_data.replace("create measurements", str(generate_data_measurement()))
+    # if "current_time" in json_data:
+    #     json_data = json_data.replace("current_time", str(get_current_time_iso()))
+    # if "get_current_time_iso" in json_data:
+    #     json_data = json_data.replace("get_current_time_iso", str(get_current_time_iso()))
+    if "get_current_time_iso+1" in json_data:
+        json_data = json_data.replace('get_current_time_iso+1', str(get_current_time_iso(+1)))
+    if "get_current_time_iso+2" in json_data:
+        json_data = json_data.replace("get_current_time_iso+2", str(get_current_time_iso(+2)))
+    if "get_current_time_iso-1" in json_data:
+        json_data = json_data.replace("get_current_time_iso-1", str(get_current_time_iso(-1)))
+    if "get_current_time_iso-2" in json_data:
+        json_data = json_data.replace("get_current_time_iso-2", str(get_current_time_iso(-2)))
+    if "doctor_id" in json_data:
+        json_data = json_data.replace("doctor_id", str(context.doctor_id))
+    context.body = json.loads(json_data)
 
 
 @when("method: {type_request}")

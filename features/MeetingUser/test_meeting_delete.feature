@@ -3,7 +3,7 @@ Feature: Удалить созданную видеовстречу
   @before.create.doctor
   @after.delete.doctor
   @before.create.meeting
-  @after.delete_meeting
+  @after.delete.meeting
   Scenario Outline: Удалить созданную видеовстречу
     Given path: /api/v4/Me/Meetings(<params>)
     And API-token: <token>

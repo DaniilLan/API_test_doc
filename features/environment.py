@@ -26,10 +26,10 @@ def after(context, type_s_f):
     if 'after.delete.measurement' in type_s_f.tags:
         if hasattr(context, 'measurement_id'):
             delete_measurement(context.patient_id, context.measurement_id)
-    if 'after.delete_org' in type_s_f.tags:
+    if 'after.delete.org' in type_s_f.tags:
         if hasattr(context, 'org_id'):
             delete_org(context.org_id)
-    if 'after.delete_meeting' in type_s_f.tags:
+    if 'after.delete.meeting' in type_s_f.tags:
         if hasattr(context, 'meeting_id'):
             delete_meeting(context.meeting_id)
 

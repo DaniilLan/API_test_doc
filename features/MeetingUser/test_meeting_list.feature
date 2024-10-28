@@ -3,7 +3,7 @@ Feature: Список созданных ВКС
   @before.create.doctor
   @after.delete.doctor
   @before.create.meeting
-  @after.delete_meeting
+  @after.delete.meeting
   Scenario: Список созданных ВКС
     Given path: /api/v4/Me/Meetings
     And API-token: doctor

@@ -3,6 +3,7 @@
 Feature: Изменение измерения
 
   @before.create.measurement
+  @after.delete.measurement
   Scenario: Изменение времени в измерении
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements(measurement_id)
     And json: {"created": "current_time"}
@@ -13,6 +14,7 @@ Feature: Изменение измерения
     And check: value_before == value.after
 
   @before.create.measurement
+  @after.delete.measurement
   Scenario: Изменение прибора в измерении
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements(measurement_id)
     And json: {"source": "manual"}

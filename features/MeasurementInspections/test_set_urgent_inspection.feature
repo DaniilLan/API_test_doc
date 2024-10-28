@@ -3,6 +3,7 @@
 Feature: Назначить срочный осмотр на измерение
 
   @before.create.measurement
+  @after.delete.measurement
   Scenario: Назначить срочный осмотр на измерение
     Given path: /api/v4/Measurements(measurement_id)/SetUrgentInspection
     And API-token: doctor
