@@ -4,7 +4,7 @@ Feature: Редактирование пользователя
   @after.delete.doctor
   Scenario: Изменение даты рождения пользователя
     Given path: /api/v4/Users(doctor_id)
-    And json: {"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": "current_time", "role": "doctor", "phone": "9688888888", "middleName": "Тест", "email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", "height": 100, "weight": 100, "avatar": "None"}
+    And json: {"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": "current time", "role": "doctor", "phone": "9688888888", "middleName": "Тест", "email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", "height": 100, "weight": 100, "avatar": "None"}
     And API-token: admin
     When method: PATCH
     Then status: 200

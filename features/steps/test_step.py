@@ -67,20 +67,21 @@ def step_impl(context, key, value):
 
 @given("json: {json_data}")
 def step_impl(context, json_data):
+    time_modifications = {
+        "-2": -2,
+        "-1": -1,
+        "0": 0,
+        "+1": 1,
+        "+2": 2
+    }
+    for modifier, value in time_modifications.items():
+        key = f"get_current_time_iso{modifier}"
+        if key in json_data:
+            json_data = json_data.replace(key, str(get_current_time_iso(value)))
     if "create measurements" in json_data:
         json_data = json_data.replace("create measurements", str(generate_data_measurement()))
-    # if "current_time" in json_data:
-    #     json_data = json_data.replace("current_time", str(get_current_time_iso()))
-    # if "get_current_time_iso" in json_data:
-    #     json_data = json_data.replace("get_current_time_iso", str(get_current_time_iso()))
-    if "get_current_time_iso+1" in json_data:
-        json_data = json_data.replace('get_current_time_iso+1', str(get_current_time_iso(+1)))
-    if "get_current_time_iso+2" in json_data:
-        json_data = json_data.replace("get_current_time_iso+2", str(get_current_time_iso(+2)))
-    if "get_current_time_iso-1" in json_data:
-        json_data = json_data.replace("get_current_time_iso-1", str(get_current_time_iso(-1)))
-    if "get_current_time_iso-2" in json_data:
-        json_data = json_data.replace("get_current_time_iso-2", str(get_current_time_iso(-2)))
+    if "current time" in json_data:
+        json_data = json_data.replace("current time", str(get_current_time_iso()))
     if "doctor_id" in json_data:
         json_data = json_data.replace("doctor_id", str(context.doctor_id))
     context.body = json.loads(json_data)
