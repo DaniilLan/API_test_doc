@@ -64,6 +64,7 @@ def step_impl(context, type_token):
 def step_impl(context, key, value):
     context.params[key] = value
 
+import json
 
 @given("json: {json_data}")
 def step_impl(context, json_data):
@@ -79,12 +80,14 @@ def step_impl(context, json_data):
         if key in json_data:
             json_data = json_data.replace(key, str(get_current_time_iso(value)))
     if "create measurements" in json_data:
-        json_data = json_data.replace("create measurements", str(generate_data_measurement()))
+        context.body = json.dumps(generate_data_measurement())
+        return
     if "current time" in json_data:
         json_data = json_data.replace("current time", str(get_current_time_iso()))
     if "doctor_id" in json_data:
         json_data = json_data.replace("doctor_id", str(context.doctor_id))
     context.body = json.loads(json_data)
+
 
 
 @when("method: {type_request}")
@@ -120,6 +123,8 @@ def step_impl(context, status):
         f"Expected status code {status}, but got {context.response.status_code}"
         f"\n"
         f"Response: {response_json}"
+        f"\n"
+        f"Request: {context.body}"
     )
 
 

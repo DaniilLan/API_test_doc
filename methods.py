@@ -1,3 +1,4 @@
+import json
 import random
 import string
 from russian_names import RussianNames
@@ -69,8 +70,10 @@ def generate_data_measurement():
             "max": 200
         }
     }
+
     source = random.choice(list(source_to_types.keys()))
     type_info = source_to_types[source]
+
     if "types" in type_info:
         measurement_type = random.choice(list(type_info["types"].keys()))
         min_value = type_info["types"][measurement_type]["min"]
@@ -79,24 +82,17 @@ def generate_data_measurement():
         measurement_type = type_info["type"]
         min_value = type_info["min"]
         max_value = type_info["max"]
+
     value = round(random.uniform(min_value, max_value), 1)
-
-    data = [
-        {
-            "created": "2024-05-25T15:49:56+04:00",
-            "source": source,
-            "type": measurement_type,
-            "value": str(value),
-            "parameters": [
-                {
-                    "type": "app.comment",
-                    "value": "test"
-                }
-            ]
-        }
-    ]
+    data = [{
+        "created": "2024-03-07T10:43:00+04:00",
+        "source": source,
+        "type": measurement_type,
+        "value": value,
+        "parameters": [{"type": "app.comment", "value": "qweqwe"}]
+    }]
     return data
-
+print(json.dumps(generate_data_measurement()))
 
 def get_random_value():
     return random.randint(40, 140)

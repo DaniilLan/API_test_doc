@@ -302,5 +302,5 @@ def delete_meeting(meeting_id):
     return response
 
 
-#print(delete_measurement(2493, 3787))
-# print(delete_patient(2494))
+# print(delete_measurement(2930, 4026))
+# print(delete_patient(2930))
