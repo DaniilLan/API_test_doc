@@ -5,11 +5,11 @@ Feature: Добавление измерений
   Scenario: Добавление измерения
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
     And API-token: doctor
-    And json: create measurements
+    And json: {"created": "2024-03-07T10:43:00+04:00", "source": "thermometer", "type": "temperature", "value": "37.0", "parameters": [{"type": "app.comment", "value": "тест"}]}
     When method: POST
 #    And get: response.json()[measurement_id]
     Then status: 200
-#
+
 #  Scenario: Добавление измерения без авторизации
 #    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
 #    And API-token: invalid
@@ -109,13 +109,12 @@ Feature: Добавление измерений
 #    And get: response.json()[measurement_id]
 #    Then status: 200
 #
-#### ОТСУТСТВУЕТ ВАЛИДНЫЙ ("value":) ДЛЯ ЗАПРОСА НА СЕРВЕР (НУЖЕН АПИ ЗАПРОС НА СОЗДАНИЕ НОВОГО ТОКЕНА ДЛЯ РАБОТЫ)
-##  Scenario: stethoscope - auscult
-##    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
-##    And API-token: doctor
-##    And json: [{"created": "2024-03-07T10:50:20+04:00", "source": "stethoscope", "type": "auscult", "value": "F3116178B23B25E5B5EF33B7B7E3DB405774F87ABFCBE5025A23927BD65F788F", "parameters": [{"type": "app.comment", "value": "тест"}]}]
-##    When method: POST
-##    Then status: 200
+  Scenario: stethoscope - auscult
+    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
+    And API-token: doctor
+    And json: [{"created": "2024-12-02T16:55:56+04:00", "source": "stethoscope", "type": "auscult", "value": "896070C92775F2B44F6365FAC9592F7E0D628FBC0D1D5110F83DD4F353233F1D", "parameters": [{"type": "mod.stethoscope.source",, "value": "2"}]}]
+    When method: POST
+    Then status: 200
 #
 #  @after.delete.measurement
 #  Scenario: smartwatch - steps

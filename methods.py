@@ -92,7 +92,6 @@ def generate_data_measurement():
         "parameters": [{"type": "app.comment", "value": "qweqwe"}]
     }]
     return data
-print(json.dumps(generate_data_measurement()))
 
 def get_random_value():
     return random.randint(40, 140)

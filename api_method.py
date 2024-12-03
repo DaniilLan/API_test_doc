@@ -108,6 +108,15 @@ def delete_measurement(user_id, measurement_id):
         return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
 
 
+def delete_all_patients(user_ids):
+    results = {}
+    for user_id in user_ids:
+        response = delete_patient(user_id)
+        results[user_id] = response.status_code  # Сохраняем статус код ответа для каждого ID
+    return results
+
+
+
 def get_id_measurement(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
@@ -300,7 +309,3 @@ def delete_meeting(meeting_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
-
-
-# print(delete_measurement(2930, 4026))
-# print(delete_patient(2930))
