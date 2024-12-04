@@ -1,7 +1,7 @@
 @before.create.patient
 Feature: Добавление измерений
 
-#  @after.delete.measurement
+  @after.delete.measurement
   Scenario: Добавление измерения
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
     And API-token: doctor
@@ -109,13 +109,13 @@ Feature: Добавление измерений
 #    And get: response.json()[measurement_id]
 #    Then status: 200
 #
-  Scenario: stethoscope - auscult
-    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
-    And API-token: doctor
-    And json: [{"created": "2024-12-02T16:55:56+04:00", "source": "stethoscope", "type": "auscult", "value": "896070C92775F2B44F6365FAC9592F7E0D628FBC0D1D5110F83DD4F353233F1D", "parameters": [{"type": "mod.stethoscope.source",, "value": "2"}]}]
-    When method: POST
-    Then status: 200
-#
+#  Scenario: stethoscope - auscult
+#    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
+#    And API-token: doctor
+#    And json: {"created": "2024-12-02T16:55:56+04:00", "source": "stethoscope", "type": "auscult", "value": "896070C92775F2B44F6365FAC9592F7E0D628FBC0D1D5110F83DD4F353233F1D", "parameters": [{"type": "mod.stethoscope.source", "value": "2"}]}
+#    When method: POST
+#    Then status: 200
+##
 #  @after.delete.measurement
 #  Scenario: smartwatch - steps
 #    Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements

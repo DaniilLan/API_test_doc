@@ -8,6 +8,11 @@ def before(context, type_s_f):
         context.new_token = get_token_user()
     if 'before.create.patient' in type_s_f.tags:
         context.patient_id = create_patient()
+    if 'before.create.patient_limits' in type_s_f.tags:
+        context.patient_id = create_patient_limits()
+    if 'before.create.patient_diagnoses' in type_s_f.tags:
+        context.patient_id = create_patient_diagnoses(param='patient_id')
+        context.diagnoses_code = create_patient_diagnoses(param='code')
     if 'before.create.measurement' in type_s_f.tags:
         context.measurement_id = create_measurement(context.patient_id)
     if 'before.create.org' in type_s_f.tags:
@@ -21,6 +26,12 @@ def after(context, type_s_f):
         if hasattr(context, 'doctor_id'):
             delete_user(context.doctor_id)
     if 'after.delete.patient' in type_s_f.tags:
+        if hasattr(context, 'patient_id'):
+            delete_patient(context.patient_id)
+    if 'after.delete.patient_limits' in type_s_f.tags:
+        if hasattr(context, 'patient_id'):
+            delete_patient(context.patient_id)
+    if 'after.delete.patient_diagnoses' in type_s_f.tags:
         if hasattr(context, 'patient_id'):
             delete_patient(context.patient_id)
     if 'after.delete.measurement' in type_s_f.tags:

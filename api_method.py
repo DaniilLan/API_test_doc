@@ -235,6 +235,41 @@ def create_patient():
     return response.json()['id']
 
 
+def create_patient_limits():
+    patient_id = create_patient()
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('[{ "min": 220.0, "max": 250.0, "measurementType": "blood_pressure_systolic"},'
+                      ' { "min": 20, "max": 220, "measurementType": "blood_pressure_diastolic"},'
+                      ' { "min": 0.0, "max": 200.0, "measurementType": "pulse"},'
+                      ' { "min": 0.0, "max": 35.0, "measurementType": "glucose"},'
+                      ' { "min": 0.0, "max": 35.0, "measurementType": "glucose_before"},'
+                      ' { "min": 0.0, "max": 35.0, "measurementType": "glucose_fasting"},'
+                      ' { "min": 0.0, "max": 35.0, "measurementType": "glucose_after"},'
+                      ' { "min": 30.0, "max": 45.0, "measurementType": "temperature"}]')
+    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Limits"
+    response = requests.post(url=url, headers=headers, json=body)
+    return patient_id
+
+
+def create_patient_diagnoses(param):
+    patient_id = create_patient()
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    body = json.loads('[{"code": "I50", "parameters": '
+                      '{"stage": "IIA", "accompanyingIllnesses": "Одышка, боли в спине"}}]')
+    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Diagnoses"
+    response = requests.post(url=url, headers=headers, json=body)
+    if param == 'patient_id':
+        return patient_id
+    elif param == 'code':
+        return response.json()['value'][0]['code']
+
+
 def delete_user(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_adm()}",
@@ -309,3 +344,5 @@ def delete_meeting(meeting_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
+
+print(create_patient_diagnoses(param='code'))

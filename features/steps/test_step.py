@@ -33,30 +33,37 @@ def step_impl(context, path):
 
 @given("API-token: {type_token}")
 def step_impl(context, type_token):
+    # Мед.р./Пациент - 'Request-Source': 'mob'
+    # Др. - 'Request-Source': 'web'
     if type_token == "new_token":
         context.headers = {
-            "Authorization": f"Bearer {context.new_token}",
-            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+            'Authorization': f"Bearer {context.new_token}",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+            'Request-Source': 'web',
         }
     if type_token == "doctor":
         context.headers = {
-            "Authorization": f"Bearer {ACCESS_TOKEN_DOCTOR}",
-            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+            'Authorization': f"Bearer {ACCESS_TOKEN_DOCTOR}",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+            'Request-Source': 'web',
         }
     if type_token == "admin":
         context.headers = {
-            "Authorization": f"Bearer {ACCESS_TOKEN_ADMIN}",
-            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+            'Authorization': f"Bearer {ACCESS_TOKEN_ADMIN}",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+            'Request-Source': 'web',
         }
     elif type_token == "invalid":
         context.headers = {
-            "Authorization": f"Bearer 123",
-            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+            'Authorization': f"Bearer 123",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+            'Request-Source': 'web',
         }
     elif type_token == "empty":
         context.headers = {
-            "Authorization": f"",
-            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+            'Authorization': f"",
+            'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+            'Request-Source': 'web',
         }
 
 
@@ -86,6 +93,9 @@ def step_impl(context, json_data):
         json_data = json_data.replace("current time", str(get_current_time_iso()))
     if "doctor_id" in json_data:
         json_data = json_data.replace("doctor_id", str(context.doctor_id))
+    context.body = json.loads(json_data)
+    if "diagnoses_code" in json_data:
+        json_data = json_data.replace("diagnoses_code", str(context.diagnoses_code))
     context.body = json.loads(json_data)
 
 
