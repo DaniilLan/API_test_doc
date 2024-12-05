@@ -97,9 +97,13 @@ def create_measurement_comment(patient_id):
     measurement_id = create_measurement(patient_id)
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
-
+    body = json.loads('{"value": "123"}')
+    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Limits"
+    response = requests.post(url=url, headers=headers, json=body)
+    return response
 
 def delete_measurement(user_id, measurement_id):
     headers = {
