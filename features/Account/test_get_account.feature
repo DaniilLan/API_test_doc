@@ -1,6 +1,6 @@
-Feature: Получить доступны аккаунты для пользователя
+Feature: Получить доступные аккаунты для пользователя
 
-  Scenario: Получить доступны аккаунты для пользователя
+  Scenario: Получить доступные аккаунты для пользователя
     Given path: /api/v4/Accounts
     And API-token: doctor
     When method: GET

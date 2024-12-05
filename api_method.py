@@ -78,7 +78,8 @@ def get_users():
 def create_measurement(patient_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({patient_id})/MedicalCard/Measurements'
     data = generate_data_measurement()
@@ -92,10 +93,19 @@ def create_measurement(patient_id):
         return {"error": f"Ошибка запроса, статус код: {response.status_code}", "response_text": response.text}
 
 
-def delete_measurement(user_id, measurement_id):
+def create_measurement_comment(patient_id):
+    measurement_id = create_measurement(patient_id)
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+
+
+def delete_measurement(user_id, measurement_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_doc()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
     response = requests.delete(url=url, headers=headers)
@@ -120,7 +130,8 @@ def delete_all_patients(user_ids):
 def get_id_measurement(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
     response = requests.get(url=url, headers=headers)
@@ -136,7 +147,8 @@ def get_id_measurement(user_id):
 def get_all_id_measurement(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
     response = requests.get(url=url, headers=headers)
@@ -159,7 +171,8 @@ def get_random_id_measurements(user_id):
 def delete_all_measurements(user_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     measurement_ids = get_all_id_measurement(user_id)
     if isinstance(measurement_ids, list):
@@ -178,10 +191,11 @@ def delete_all_measurements(user_id):
         print(f"Ошибка при получении списка измерений: {measurement_ids}")
 
 
-def change_measurement():
+def change_measurement(id_measurement):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
-        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
+        'Request-Source': 'web',
     }
     body = json.loads('{"id": 0, '
                       '"created": "2024-05-01T09:56:01.623Z", '
@@ -189,7 +203,7 @@ def change_measurement():
                       '"type": "temperature", '
                       '"value": "100", '
                       '"parameters": [{"type": "app.comment", "value": "string123"}]}')
-    url = f"http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements(2559)"
+    url = f"http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({id_measurement})"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
 
@@ -345,4 +359,3 @@ def delete_meeting(meeting_id):
     response = requests.delete(url=url, headers=headers)
     return response
 
-print(create_patient_diagnoses(param='code'))
