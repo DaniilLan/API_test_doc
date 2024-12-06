@@ -7,7 +7,7 @@ Feature: Добавление измерений
     And API-token: doctor
     And json: {"created": "2024-03-07T10:43:00+04:00", "source": "thermometer", "type": "temperature", "value": "37.0", "parameters": [{"type": "app.comment", "value": "тест"}]}
     When method: POST
-#    And get: response.json()[measurement_id]
+ #   And get: response.json()[measurement_id]
     Then status: 200
 
 #  Scenario: Добавление измерения без авторизации

@@ -8,6 +8,7 @@ Feature: Создать видеовстречу
     And API-token: <token>
     And json: {"name": "<name_meeting>", "description": "<description_meet>", "startDate": "<startDate>", "endDate": "<endDate>", "invitedUserIds": ["<doctors_id>"]}
     When method: POST
+    And get: response.json()[meeting_id]
     Then status: <expected_status>
   Examples:
     | token   | expected_status | name_meeting | description_meet | startDate              | endDate                | doctors_id | check_name                                           |

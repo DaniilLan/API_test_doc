@@ -71,7 +71,6 @@ def step_impl(context, type_token):
 def step_impl(context, key, value):
     context.params[key] = value
 
-import json
 
 @given("json: {json_data}")
 def step_impl(context, json_data):
@@ -99,7 +98,6 @@ def step_impl(context, json_data):
     context.body = json.loads(json_data)
 
 
-
 @when("method: {type_request}")
 def step_impl(context, type_request):
     if type_request == 'GET':
@@ -118,6 +116,8 @@ def step_impl(context, type_request):
 def step_impl(context, value):
     if value == "measurement_id":
         context.measurement_id = context.response.json()['value'][0]['id']
+    elif value == "meeting_id":
+        context.meeting_id = context.response.json()['id']
     else:
         context.value_before = context.body[value]
         context.value_after = context.response.json()[value]
