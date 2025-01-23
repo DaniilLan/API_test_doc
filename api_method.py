@@ -217,13 +217,24 @@ def create_doctor():
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads(f'{"{"}"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": '
-                      f'"2001-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
-                      f'"email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", '
-                      f'"height": 100, "weight": 100, "avatar": "None"{"}"}')
+    body = json.loads('{"firstName": "Авто",'
+                      '"lastName": "Апи", '
+                      '"orgId": 101, '
+                      '"birthDate": '
+                      '"2001-10-07T08:07:18.113Z", '
+                      '"role": "doctor", '
+                      '"phone": "9688888888", '
+                      '"middleName": "Тест", '
+                      '"email": "avtotest@avto.test", '
+                      '"password": "12345678", '
+                      '"username": "avtotest", '
+                      '"sex": "male", '
+                      '"height": 100, '
+                      '"weight": 100, '
+                      '"avatar": "None"}')
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
-    return response.json()["id"]
+    return response.json()
 
 
 def change_doctor():
@@ -231,10 +242,21 @@ def change_doctor():
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName": "Авто","lastName": "Апи", "orgId": 101, "birthDate": '
-                      '"2001-10-07T08:07:18.113Z", "role": "doctor", "phone": "9688888888", "middleName": "Тест", '
-                      '"email": "avtotest@avto.test", "password": "12345678", "username": "avtotest", "sex": "male", '
-                      '"height": 100, "weight": 100, "avatar": "None"}')
+    body = json.loads('{"firstName": "Авто",'
+                      '"lastName": "Апи", '
+                      '"orgId": 101, '
+                      '"birthDate": '
+                      '"2001-10-07T08:07:18.113Z", '
+                      '"role": "doctor", '
+                      '"phone": "9688888888", '
+                      '"middleName": "Тест", '
+                      '"email": "avtotest@avto.test", '
+                      '"password": "12345678", '
+                      '"username": "avtotest", '
+                      '"sex": "male", '
+                      '"height": 100, '
+                      '"weight": 100, '
+                      '"avatar": "None"}')
     url = f"http://192.168.7.221:8081/api/v4/Users"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
@@ -245,9 +267,18 @@ def create_patient():
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName":"Ярослав","lastName":"Ефимов","middleName":"Владимирович","height":177,'
-                      f'"weight":70,"email":"{random_mail()}","phone":"7887787764","birthDate":"1999-05-07",'
-                      '"sex":"male","orgId":3,"role":"patient","id":2424}')
+    body = json.loads('{"firstName":"Ярослав",'
+                      '"lastName":"Ефимов",'
+                      '"middleName":"Владимирович",'
+                      '"height":177,'
+                      f'"weight":70,'
+                      f'"email":"{random_mail()}",'
+                      f'"phone":"7887787764",'
+                      f'"birthDate":"1999-05-07",'
+                      '"sex":"male",'
+                      '"orgId":3,'
+                      '"role":"patient",'
+                      '"id":2424}')
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
@@ -363,3 +394,4 @@ def delete_meeting(meeting_id):
     response = requests.delete(url=url, headers=headers)
     return response
 
+print(delete_user(3452))

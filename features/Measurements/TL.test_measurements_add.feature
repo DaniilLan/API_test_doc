@@ -5,7 +5,7 @@ Feature: Добавление измерений
   Scenario: Добавление измерения
     Given path: /api/v4/Me/Telemed.Medworker/Patients(patient_id)/MedicalCard/Measurements
     And API-token: doctor
-    And json: {"created": "2024-03-07T10:43:00+04:00", "source": "thermometer", "type": "temperature", "value": "37.0", "parameters": [{"type": "app.comment", "value": "тест"}]}
+    And json: [{"created": "2024-03-07T10:43:00+04:00", "source": "thermometer", "type": "temperature", "value": "37.0", "parameters": [{"type": "app.comment", "value": "тест"}]}]
     When method: POST
  #   And get: response.json()[measurement_id]
     Then status: 200

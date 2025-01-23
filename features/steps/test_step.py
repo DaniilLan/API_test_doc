@@ -45,7 +45,7 @@ def step_impl(context, type_token):
         context.headers = {
             'Authorization': f"Bearer {ACCESS_TOKEN_DOCTOR}",
             'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
-            'Request-Source': 'web',
+            'Request-Source': 'mob:123456',
         }
     if type_token == "admin":
         context.headers = {
