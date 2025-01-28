@@ -19,8 +19,8 @@ Feature: Создать видеовстречу
     | doctor  | 404             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 | get_current_time_iso+2 | 999999     | Не существующий id участника встречи                 |
     | doctor  | 400             | Namemeet     | Descriptionmeet  |                        | get_current_time_iso+2 | doctor_id  | Не указано время начала                              |
     | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 |                        | doctor_id  | Не указано время окончания                           |
-    | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso   | get_current_time_iso+1 | doctor_id  | Некорректный диапозон времени (start_time = now_time)|
-    | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso-1 | get_current_time_iso+1 | doctor_id  | Некорректный диапозон времени (start_time < now_time)|
+    | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 | get_current_time_iso+1 | doctor_id  | Некорректный диапозон времени (start_time = now_time)|
+    | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 | get_current_time_iso   | doctor_id  | Некорректный диапозон времени (start_time < now_time)|
     | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+2 | get_current_time_iso+1 | doctor_id  | Некорректный диапозон времени (start_time > end_time)|
     | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 | get_current_time_iso+1 | doctor_id  | Некорректный диапозон времени (start_time = end_time)|
     | doctor  | 400             | Namemeet     | Descriptionmeet  | get_current_time_iso+1 | get_current_time_iso   | doctor_id  | Некорректный диапозон времени (end_time = now_time)  |
