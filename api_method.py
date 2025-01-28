@@ -105,6 +105,7 @@ def create_measurement_comment(patient_id):
     response = requests.post(url=url, headers=headers, json=body)
     return response
 
+
 def delete_measurement(user_id, measurement_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
@@ -128,7 +129,6 @@ def delete_all_patients(user_ids):
         response = delete_patient(user_id)
         results[user_id] = response.status_code  # Сохраняем статус код ответа для каждого ID
     return results
-
 
 
 def get_id_measurement(user_id):
@@ -201,12 +201,17 @@ def change_measurement(id_measurement):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
         'Request-Source': 'web',
     }
-    body = json.loads('{"id": 0, '
-                      '"created": "2024-05-01T09:56:01.623Z", '
-                      '"source": "urine-analyzer", '
-                      '"type": "temperature", '
-                      '"value": "100", '
-                      '"parameters": [{"type": "app.comment", "value": "string123"}]}')
+    body = {"id": 0,
+            "created": "2024-05-01T09:56:01.623Z",
+            "source": "urine-analyzer",
+            "type": "temperature",
+            "value": "100",
+            "parameters": [
+                {
+                    "type": "app.comment",
+                    "value": "string123"
+                }
+            ]}
     url = f"http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({id_measurement})"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
@@ -217,24 +222,25 @@ def create_doctor():
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName": "Авто",'
-                      '"lastName": "Апи", '
-                      '"orgId": 101, '
-                      '"birthDate": '
-                      '"2001-10-07T08:07:18.113Z", '
-                      '"role": "doctor", '
-                      '"phone": "9688888888", '
-                      '"middleName": "Тест", '
-                      '"email": "avtotest@avto.test", '
-                      '"password": "12345678", '
-                      '"username": "avtotest", '
-                      '"sex": "male", '
-                      '"height": 100, '
-                      '"weight": 100, '
-                      '"avatar": "None"}')
+    body = {
+        "firstName": "Авто",
+        "lastName": "Апи",
+        "orgId": 101,
+        "birthDate": "2001-10-07T08:07:18.113Z",
+        "role": "doctor",
+        "phone": random_phone(),
+        "middleName": "Тест",
+        "email": "avtotest@avto.test",
+        "password": "12345678",
+        "username": "avtotest",
+        "sex": "male",
+        "height": 100,
+        "weight": 100,
+        "avatar": "None"
+    }
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
-    return response.json()
+    return response.json()['id']
 
 
 def change_doctor():
@@ -242,21 +248,22 @@ def change_doctor():
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName": "Авто",'
-                      '"lastName": "Апи", '
-                      '"orgId": 101, '
-                      '"birthDate": '
-                      '"2001-10-07T08:07:18.113Z", '
-                      '"role": "doctor", '
-                      '"phone": "9688888888", '
-                      '"middleName": "Тест", '
-                      '"email": "avtotest@avto.test", '
-                      '"password": "12345678", '
-                      '"username": "avtotest", '
-                      '"sex": "male", '
-                      '"height": 100, '
-                      '"weight": 100, '
-                      '"avatar": "None"}')
+    body = {
+        "firstName": "Авто",
+        "lastName": "Апи",
+        "orgId": 101,
+        "birthDate": "2001-10-07T08:07:18.113Z",
+        "role": "doctor",
+        "phone": random_phone(),
+        "middleName": "Тест",
+        "email": "avtotest@avto.test",
+        "password": "12345678",
+        "username": "avtotest",
+        "sex": "male",
+        "height": 100,
+        "weight": 100,
+        "avatar": "None"
+    }
     url = f"http://192.168.7.221:8081/api/v4/Users"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
@@ -267,18 +274,18 @@ def create_patient():
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    body = json.loads('{"firstName":"Ярослав",'
-                      '"lastName":"Ефимов",'
-                      '"middleName":"Владимирович",'
-                      '"height":177,'
-                      f'"weight":70,'
-                      f'"email":"{random_mail()}",'
-                      f'"phone":"7887787764",'
-                      f'"birthDate":"1999-05-07",'
-                      '"sex":"male",'
-                      '"orgId":3,'
-                      '"role":"patient",'
-                      '"id":2424}')
+    body = {"firstName": "Ярослав",
+            "lastName": "Ефимов",
+            "middleName": "Владимирович",
+            "height": 177,
+            "weight": 70,
+            "email": "avtotest@avto.test",
+            "phone": random_phone(),
+            "birthDate": "1999-05-07",
+            "sex": "male",
+            "orgId": 3,
+            "role": "patient",
+            "id": 2424}
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
@@ -355,8 +362,14 @@ def create_org():
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
     url = f"http://192.168.7.221:8081/api/v4/Organizations"
-    body = json.loads('{"name": "Тестовая Орг", "address": "Самара123", "idExt": "99", "email": "apiorg@api.org", '
-                      '"phone": "8999966544", "parentId": 100}')
+    body = {
+        "name": "Тестовая Орг",
+        "address": "Самара123",
+        "idExt": "99",
+        "email": "apiorg@api.org",
+        "phone": "8999966544",
+        "parentId": 100
+    }
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
 
@@ -377,10 +390,13 @@ def create_meetings(doctor_id):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings"
-    body = json.loads('{"name": "Апи встреча", "description": "Тестирование", '
-                      f'"startDate": "{get_current_time_iso()}", '
-                      f'"endDate": "{get_current_time_iso(1)}", "invitedUserIds": [{doctor_id}]'
-                      '}')
+    body = {
+        "name": "Апи встреча",
+         "description": "Тестирование",
+        "startDate": "{get_current_time_iso()}",
+        "endDate": "{get_current_time_iso(1)}",
+        "invitedUserIds": [{doctor_id}]
+    }
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
 
@@ -393,5 +409,3 @@ def delete_meeting(meeting_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
-
-print(delete_user(3452))

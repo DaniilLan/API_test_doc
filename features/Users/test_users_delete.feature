@@ -34,7 +34,7 @@ Feature: Удаление пользователя
     Given path: /api/v4/Users(qweqwe)
     And API-token: doctor
     When method: DELETE
-    Then status: 400
+    Then status: 404
 
   @before.create.patient
   @after.delete.patient

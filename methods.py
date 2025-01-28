@@ -69,6 +69,7 @@ def generate_data_measurement():
     }]
     return data
 
+
 def get_random_value():
     return random.randint(40, 140)
 
@@ -123,6 +124,8 @@ def random_fio(value='FIO'):
 
 def random_mail():
     """Создание рандомного mail"""
-    mail = ''.join(random.choice(string.ascii_letters) for _ in range(8)) + str(random.randint(1, 1000)) + "@gmail.com"
+    domains = ["gmail.com", "yahoo.com", "outlook.com", "mail.ru", "yandex.ru", "hotmail.com"]
+    username = ''.join(random.choice(string.ascii_letters) for _ in range(8)) + str(random.randint(1, 1000))
+    domain = random.choice(domains)
+    mail = f"{username}@{domain}"
     return mail
-
