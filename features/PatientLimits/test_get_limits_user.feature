@@ -25,7 +25,7 @@ Feature: Получение лимитов по Пользователю
     Given path: /api/v4/Users(test)/Limits
     And API-token: doctor
     When method: GET
-    Then status: 400
+    Then status: 404
 
    Scenario: Без авторизации
     Given path: /api/v4/Users(patient_id)/Limits

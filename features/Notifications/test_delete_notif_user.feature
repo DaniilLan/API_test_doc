@@ -14,7 +14,7 @@ Feature: Удаление всех уведомлений для пользов�
     Given path: /api/v4/Users(qweqwe)/Notifications
     And API-token: new_token
     When method: DELETE
-    Then status: 400
+    Then status: 404
 
   @before.create.doctor
   @after.delete.doctor

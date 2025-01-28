@@ -75,7 +75,7 @@ def get_random_value():
 
 
 def get_current_time_iso(hours_to_add=0):
-    current_time = datetime.now(timezone.utc) + timedelta(hours=hours_to_add)
+    current_time = datetime.now(timezone.utc) + timedelta(hours=1+hours_to_add)
     milliseconds = round(current_time.microsecond / 1000)
     current_time_iso = current_time.strftime('%Y-%m-%dT%H:%M:%S.') + f'{milliseconds:02d}Z'
     return current_time_iso.replace("0Z", 'Z')
@@ -129,3 +129,7 @@ def random_mail():
     domain = random.choice(domains)
     mail = f"{username}@{domain}"
     return mail
+
+
+print(get_current_time_iso())
+print(get_current_time_iso(1))

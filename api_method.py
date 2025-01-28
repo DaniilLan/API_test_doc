@@ -242,7 +242,6 @@ def create_doctor():
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
 
-
 def change_doctor():
     headers = {
         "Authorization": f"Bearer {get_token_adm()}",
@@ -279,7 +278,7 @@ def create_patient():
             "middleName": "Владимирович",
             "height": 177,
             "weight": 70,
-            "email": "avtotest@avto.test",
+            "email": random_mail(),
             "phone": random_phone(),
             "birthDate": "1999-05-07",
             "sex": "male",
@@ -393,9 +392,9 @@ def create_meetings(doctor_id):
     body = {
         "name": "Апи встреча",
         "description": "Тестирование",
-        "startDate": "{get_current_time_iso()}",
-        "endDate": "{get_current_time_iso(1)}",
-        "invitedUserIds": [{doctor_id}]
+        "startDate": get_current_time_iso(),
+        "endDate": get_current_time_iso(1),
+        "invitedUserIds": [doctor_id]
     }
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
@@ -409,3 +408,4 @@ def delete_meeting(meeting_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
+

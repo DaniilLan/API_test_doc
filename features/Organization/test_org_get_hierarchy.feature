@@ -22,7 +22,7 @@ Feature: Список организации с иерархией
     Given path: /api/v4/Organizations(qweqwe)/GetHierarchy
     And API-token: doctor
     When method: GET
-    Then status: 400
+    Then status: 404
 
   Scenario: Без авторизации
     Given path: /api/v4/Organizations(100)/GetHierarchy
