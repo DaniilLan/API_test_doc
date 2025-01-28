@@ -392,7 +392,7 @@ def create_meetings(doctor_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings"
     body = {
         "name": "Апи встреча",
-         "description": "Тестирование",
+        "description": "Тестирование",
         "startDate": "{get_current_time_iso()}",
         "endDate": "{get_current_time_iso(1)}",
         "invitedUserIds": [{doctor_id}]
