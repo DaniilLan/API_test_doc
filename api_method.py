@@ -240,7 +240,8 @@ def create_doctor():
     }
     url = f"http://192.168.7.221:8081/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
-    return response.json()['id']
+    return response.json()
+
 
 def change_doctor():
     headers = {
@@ -408,4 +409,7 @@ def delete_meeting(meeting_id):
     url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
+
+
+print(create_doctor())
 

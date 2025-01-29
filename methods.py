@@ -131,5 +131,3 @@ def random_mail():
     return mail
 
 
-print(get_current_time_iso())
-print(get_current_time_iso(1))
