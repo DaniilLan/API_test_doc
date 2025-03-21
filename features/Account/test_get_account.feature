@@ -5,6 +5,7 @@ Feature: Получить доступные аккаунты для польз�
     And API-token: doctor
     When method: GET
     Then status: 200
+    And response json: is not empty
 
   Scenario: Без авторизации
     Given path: /api/v4/Accounts

@@ -157,3 +157,5 @@ def step_impl(context, type_resp):
         assert context.response.json() != [], "Json ответа пустой."
     if type_resp == 'text':
         assert context.response.text != [], "Text ответа пустой."
+
+

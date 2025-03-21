@@ -5,4 +5,4 @@ Feature: получить Metadata
     And API-token: doctor
     When method: GET
     Then status: 200
-    Then response json: is not empty
+    And response json: is not empty

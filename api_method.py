@@ -75,6 +75,15 @@ def get_users():
     return user_ids
 
 
+def get_user(user_id):
+    headers = {
+        "Authorization": f"Bearer {get_token_adm()}",
+        'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
+    }
+    response = requests.get(url=f'http://192.168.7.221:8081/api/v4/Users({user_id})', headers=headers)
+    return response.json()
+
+
 def create_measurement(patient_id):
     headers = {
         "Authorization": f"Bearer {get_token_doc()}",
@@ -193,7 +202,6 @@ def delete_all_measurements(user_id):
                 print(f"Ошибка при удалении измерения с ID {measurement_id}, статус код: {response.status_code}")
     else:
         print(f"Ошибка при получении списка измерений: {measurement_ids}")
-
 
 def change_measurement(id_measurement):
     headers = {
@@ -411,5 +419,5 @@ def delete_meeting(meeting_id):
     return response
 
 
-print(create_doctor())
+print(get_user(4024))
 
