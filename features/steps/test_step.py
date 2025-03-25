@@ -4,7 +4,11 @@ import requests
 from api_method import *
 from methods import *
 import json
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+HOST_PORT = os.getenv('HOST_PORT')
 ACCESS_TOKEN_DOCTOR = get_token_doc()
 ACCESS_TOKEN_ADMIN = get_token_adm()
 
@@ -26,7 +30,7 @@ def step_impl(context, path):
         path = path.replace("org_id", str(context.org_id))
     if "meeting_id" in path:
         path = path.replace("meeting_id", str(context.meeting_id))
-    context.url = f"http://192.168.7.221:8081{path}"
+    context.url = f"http://{HOST_PORT+path}"
     context.body = {}
     context.params = {}
 

@@ -1,6 +1,6 @@
 from behave import fixture, use_fixture
 from api_method import *
-
+from db_connect import query_delete
 
 def before(context, type_s_f):
     if 'before.create.doctor' in type_s_f.tags:
@@ -24,10 +24,10 @@ def before(context, type_s_f):
 def after(context, type_s_f):
     if 'after.delete.doctor' in type_s_f.tags:
         if hasattr(context, 'doctor_id'):
-            delete_user(context.doctor_id)
+            query_delete(context.doctor_id)
     if 'after.delete.patient' in type_s_f.tags:
         if hasattr(context, 'patient_id'):
-            delete_patient(context.patient_id)
+            query_delete(context.patient_id)
     if 'after.delete.patient_limits' in type_s_f.tags:
         if hasattr(context, 'patient_id'):
             delete_patient(context.patient_id)

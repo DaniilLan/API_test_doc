@@ -3,7 +3,7 @@ Feature: Отправить код для восстановления на по
   Scenario: Отправить код для восстановления на почту пользователя
     Given path: /api/v4/Users/SendRestoreCode
     And API-token: doctor
-    And json: {"email": "landan2001@mail.ru"}
+    And json: {"email": "doc@tele.com"}
     When method: POST
     Then status: 200
 

@@ -1,12 +1,17 @@
 from random import choice
 import requests
 from methods import *
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+HOST_PORT = os.getenv('HOST_PORT')
 
 
 def get_token_user():
-    login = "avtotest@avto.test"
-    password = "12345678"
-    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    login = os.getenv('TEST_USER')
+    password = os.getenv('PASS_USER')
+    req_url = f"http://{HOST_PORT}/api/v4/Users/Login"
     headers = {
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
@@ -19,9 +24,9 @@ def get_token_user():
 
 
 def get_token_sup_adm():
-    login = "admin"
-    password = "test"
-    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    login = os.getenv('SUP_ADMIN')
+    password = os.getenv('PASS_SUP_ADMIN')
+    req_url = f"http://{HOST_PORT}/api/v4/Users/Login"
     headers = {
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
@@ -34,9 +39,9 @@ def get_token_sup_adm():
 
 
 def get_token_doc():
-    login = "landan2001@mail.ru"
-    password = "123456789"
-    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    login = os.getenv('DOCTOR')
+    password = os.getenv('PASS_DOCTOR')
+    req_url = f"http://{HOST_PORT}/api/v4/Users/Login"
     headers = {
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
@@ -49,9 +54,9 @@ def get_token_doc():
 
 
 def get_token_adm():
-    login = "TestLanAdm@mail.ru"
-    password = "12345678"
-    req_url = "http://192.168.7.221:8081/api/v4/Users/Login"
+    login = os.getenv('ADMIN')
+    password = os.getenv('PASS_ADMIN')
+    req_url = f"http://{HOST_PORT}/api/v4/Users/Login"
     headers = {
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
@@ -68,7 +73,7 @@ def get_users():
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    response = requests.get(url='http://192.168.7.221:8081/api/v4/Users', headers=headers)
+    response = requests.get(url=f"http://{HOST_PORT}/api/v4/Users", headers=headers)
     user_ids = [user['id'] for user in response.json().get('value', [])]
     return user_ids
 
@@ -78,7 +83,7 @@ def get_user(user_id):
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    response = requests.get(url=f'http://192.168.7.221:8081/api/v4/Users({user_id})', headers=headers)
+    response = requests.get(url=f"http://{HOST_PORT}/api/v4/Users({user_id})", headers=headers)
     return response.json()
 
 
@@ -88,7 +93,7 @@ def create_measurement(patient_id):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
         'Request-Source': 'web',
     }
-    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({patient_id})/MedicalCard/Measurements'
+    url = f"http://{HOST_PORT}/api/v4/Me/Telemed.Medworker/Patients({patient_id})/MedicalCard/Measurements"
     data = generate_data_measurement()
     response = requests.post(url=url, headers=headers, json=data)
     if response.status_code == 200 or response.status_code == 201:
@@ -108,7 +113,7 @@ def create_measurement_comment(patient_id):
         'Request-Source': 'web',
     }
     body = json.loads('{"value": "123"}')
-    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Limits"
+    url = f"http://{HOST_PORT}/api/v4/Users({patient_id})/Limits"
     response = requests.post(url=url, headers=headers, json=body)
     return response
 
@@ -119,7 +124,7 @@ def delete_measurement(user_id, measurement_id):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
         'Request-Source': 'web',
     }
-    url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
+    url = f"http://{HOST_PORT}api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})"
     response = requests.delete(url=url, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
         try:
@@ -144,7 +149,7 @@ def get_id_measurement(user_id):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
         'Request-Source': 'web',
     }
-    url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
+    url = f"http://{HOST_PORT}/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
     response = requests.get(url=url, headers=headers)
     if response.status_code == 200 or response.status_code == 201:
         try:
@@ -161,7 +166,7 @@ def get_all_id_measurement(user_id):
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;',
         'Request-Source': 'web',
     }
-    url = f"http://192.168.7.221:8081/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
+    url = f"http://{HOST_PORT}/api/v4/Measurements?$filter=((user/id%20eq%20{user_id}))"
     response = requests.get(url=url, headers=headers)
 
     if response.status_code == 200 or response.status_code == 201:
@@ -188,7 +193,7 @@ def delete_all_measurements(user_id):
     measurement_ids = get_all_id_measurement(user_id)
     if isinstance(measurement_ids, list):
         for measurement_id in measurement_ids:
-            url = f'http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
+            url = f'http://{HOST_PORT}/api/v4/Me/Telemed.Medworker/Patients({user_id})/MedicalCard/Measurements({measurement_id})'
             response = requests.delete(url=url, headers=headers)
 
             if response.status_code == 200 or response.status_code == 201:
@@ -218,7 +223,7 @@ def change_measurement(id_measurement):
                     "value": "string123"
                 }
             ]}
-    url = f"http://192.168.7.221:8081/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({id_measurement})"
+    url = f"http://{HOST_PORT}/api/v4/Me/Telemed.Medworker/Patients(1267)/MedicalCard/Measurements({id_measurement})"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
 
@@ -231,22 +236,22 @@ def create_doctor():
     body = {
         "firstName": "Авто",
         "lastName": "Апи",
-        "orgId": 101,
+        "orgId": 1,
         "birthDate": "2001-10-07T08:07:18.113Z",
         "role": "doctor",
         "phone": random_phone(),
         "middleName": "Тест",
-        "email": "avtotest@avto.test",
-        "password": "12345678",
+        "email": os.getenv('TEST_USER'),
+        "password": os.getenv('PASS_USER'),
         "username": "avtotest",
         "sex": "male",
         "height": 100,
         "weight": 100,
         "avatar": "None"
     }
-    url = f"http://192.168.7.221:8081/api/v4/Users/Register"
+    url = f"http://{HOST_PORT}/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
-    return response.json()
+    return response.json()['id']
 
 
 def change_doctor():
@@ -257,20 +262,20 @@ def change_doctor():
     body = {
         "firstName": "Авто",
         "lastName": "Апи",
-        "orgId": 101,
+        "orgId": 1,
         "birthDate": "2001-10-07T08:07:18.113Z",
         "role": "doctor",
         "phone": random_phone(),
         "middleName": "Тест",
-        "email": "avtotest@avto.test",
-        "password": "12345678",
+        "email": os.getenv('TEST_USER'),
+        "password": os.getenv('PASS_USER'),
         "username": "avtotest",
         "sex": "male",
         "height": 100,
         "weight": 100,
         "avatar": "None"
     }
-    url = f"http://192.168.7.221:8081/api/v4/Users"
+    url = f"http://{HOST_PORT}/api/v4/Users"
     response = requests.patch(url=url, headers=headers, json=body)
     return response.json()
 
@@ -292,7 +297,7 @@ def create_patient():
             "orgId": 3,
             "role": "patient",
             "id": 2424}
-    url = f"http://192.168.7.221:8081/api/v4/Users/Register"
+    url = f"http://{HOST_PORT}/api/v4/Users/Register"
     response = requests.post(url=url, headers=headers, json=body)
     return response.json()['id']
 
@@ -311,7 +316,7 @@ def create_patient_limits():
                       ' { "min": 0.0, "max": 35.0, "measurementType": "glucose_fasting"},'
                       ' { "min": 0.0, "max": 35.0, "measurementType": "glucose_after"},'
                       ' { "min": 30.0, "max": 45.0, "measurementType": "temperature"}]')
-    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Limits"
+    url = f"http://{HOST_PORT}/api/v4/Users({patient_id})/Limits"
     response = requests.post(url=url, headers=headers, json=body)
     return patient_id
 
@@ -324,7 +329,7 @@ def create_patient_diagnoses(param):
     }
     body = json.loads('[{"code": "I50", "parameters": '
                       '{"stage": "IIA", "accompanyingIllnesses": "Одышка, боли в спине"}}]')
-    url = f"http://192.168.7.221:8081/api/v4/Users({patient_id})/Diagnoses"
+    url = f"http://{HOST_PORT}/api/v4/Users({patient_id})/Diagnoses"
     response = requests.post(url=url, headers=headers, json=body)
     if param == 'patient_id':
         return patient_id
@@ -337,7 +342,7 @@ def delete_user(user_id):
         "Authorization": f"Bearer {get_token_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
+    url = f"http://{HOST_PORT}/api/v4/Users({user_id})"
     response = requests.delete(url=url, headers=headers)
     return response
 
@@ -347,7 +352,7 @@ def delete_patient(user_id):
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})"
+    url = f"http://{HOST_PORT}/api/v4/Users({user_id})"
     response = requests.delete(url=url, headers=headers)
     return response
 
@@ -357,7 +362,7 @@ def change_status(user_id, status):
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Users({user_id})/ChangeStatus(status={status})"
+    url = f"http://{HOST_PORT}/api/v4/Users({user_id})/ChangeStatus(status={status})"
     response = requests.post(url=url, headers=headers)
     return response
 
@@ -367,7 +372,7 @@ def create_org():
         "Authorization": f"Bearer {get_token_sup_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Organizations"
+    url = f"http://{HOST_PORT}/api/v4/Organizations"
     body = {
         "name": "Тестовая Орг",
         "address": "Самара123",
@@ -385,7 +390,7 @@ def delete_org(org_id):
         "Authorization": f"Bearer {get_token_sup_adm()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Organizations({org_id})"
+    url = f"http://{HOST_PORT}/api/v4/Organizations({org_id})"
     response = requests.delete(url=url, headers=headers)
     return response
 
@@ -395,7 +400,7 @@ def create_meetings(doctor_id):
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Me/Meetings"
+    url = f"http://{HOST_PORT}/api/v4/Me/Meetings"
     body = {
         "name": "Апи встреча",
         "description": "Тестирование",
@@ -412,10 +417,7 @@ def delete_meeting(meeting_id):
         "Authorization": f"Bearer {get_token_doc()}",
         'Content-Type': 'application/json; odata.metadata=minimal; odata.streaming=true;'
     }
-    url = f"http://192.168.7.221:8081/api/v4/Me/Meetings({meeting_id})"
+    url = f"http://{HOST_PORT}/api/v4/Me/Meetings({meeting_id})"
     response = requests.delete(url=url, headers=headers)
     return response
-
-
-print(get_user(4024))
 
